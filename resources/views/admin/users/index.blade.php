@@ -56,7 +56,7 @@
                             </select>
                         </div>
                         <button type="button" data-bs-toggle="modal" data-bs-target="#addUserModal"
-                            class="btn btn-secondary">Add User</button>
+                            class="btn btn-secondary"><i class="ti ti-plus fs-sm me-2"></i>Add User</button>
                     </div>
                 </div>
 
@@ -76,9 +76,20 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center gap-2">
-                                            <div class="avatar avatar-sm">
-                                                <img src="{{ asset('assets') }}/images/users/user-10.jpg"
-                                                    class="img-fluid rounded-circle" alt="" />
+                                            {{-- Avatar Inisial --}}
+                                            <div class="avatar avatar-sm d-flex align-items-center justify-content-center rounded-circle bg-primary text-white fw-bold"
+                                                style="width: 32px; height: 32px; font-size: 12px;">
+                                                @php
+                                                    $words = explode(' ', $data->name ?? 'U');
+                                                    $initials = '';
+                                                    foreach ($words as $key => $word) {
+                                                        if ($key < 2) {
+                                                            // Ambil maksimal 2 huruf (depan & belakang)
+                                                            $initials .= strtoupper(substr($word, 0, 1));
+                                                        }
+                                                    }
+                                                    echo $initials;
+                                                @endphp
                                             </div>
                                             <div>
                                                 <h5 class="fs-base mb-0">

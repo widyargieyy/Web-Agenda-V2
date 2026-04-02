@@ -19,7 +19,7 @@
         <li class="side-nav-item">
             <a data-bs-toggle="collapse" href="#projects" aria-expanded="false" aria-controls="projects"
                 class="side-nav-link">
-                <span class="menu-icon"><i class="ti ti-briefcase"></i></span>
+                <span class="menu-icon"><i class="ti ti-calendar-event"></i></span>
                 <span class="menu-text" data-lang="projects">Agenda</span>
                 <span class="menu-arrow"></span>
             </a>
@@ -60,7 +60,7 @@
         <li class="side-nav-item">
             <a data-bs-toggle="collapse" href="#projects" aria-expanded="false" aria-controls="projects"
                 class="side-nav-link">
-                <span class="menu-icon"><i class="ti ti-briefcase"></i></span>
+                <span class="menu-icon"><i class="ti ti-calendar-event"></i></span>
                 <span class="menu-text" data-lang="projects">Agenda</span>
                 <span class="menu-arrow"></span>
             </a>
@@ -77,11 +77,6 @@
                         </a>
                     </li>
 
-                    {{-- <li class="side-nav-item">
-                    <a href="" class="side-nav-link">
-                        <span class="menu-text" data-lang="apps-projects-grid">Upload Dokumen</span>
-                    </a>
-                </li> --}}
                 </ul>
             </div>
         </li>
@@ -105,33 +100,25 @@
 
         {{-- Projects --}}
         <li class="side-nav-item">
-            <a data-bs-toggle="collapse" href="#projects" aria-expanded="false" aria-controls="projects"
-                class="side-nav-link">
+            <a href="{{ route('admin.user-management.index') }}" class="side-nav-link">
                 <span class="menu-icon"><i class="ti ti-briefcase"></i></span>
                 <span class="menu-text" data-lang="projects">Manajemen User</span>
-                <span class="menu-arrow"></span>
             </a>
-            <div class="collapse" id="projects">
-                <ul class="sub-menu">
-                    <li class="side-nav-item">
-                        <a href="{{ route('admin.user-management.index') }}" class="side-nav-link">
-                            <span class="menu-text" data-lang="apps-projects-grid">Daftar User</span>
-                        </a>
-                    </li>
-                    <li class="side-nav-item">
-                        <a href="{{ route('kabid.completed.index') }}" class="side-nav-link">
-                            <span class="menu-text" data-lang="apps-projects-grid">Tambah User</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+
         </li>
 
         {{-- Dashboards --}}
         <li class="side-nav-item">
-            <a href="#" class="side-nav-link ">
-                <span class="menu-icon"><i class="ti ti-dashboard"></i></span>
+            <a href="{{ route('admin.data-kategori.index') }}" class="side-nav-link ">
+                <span class="menu-icon"><i class="ti ti-tags"></i></span>
                 <span class="menu-text" data-lang="apps-chat">Manajemen Kategori</span>
+            </a>
+        </li>
+
+        <li class="side-nav-item">
+            <a href="#" class="side-nav-link ">
+                <span class="menu-icon"><i class="ti ti-calendar-event"></i></span>
+                <span class="menu-text" data-lang="apps-chat">Data Agenda</span>
             </a>
         </li>
 
@@ -157,7 +144,7 @@
         <li class="side-nav-item">
             <a data-bs-toggle="collapse" href="#projects" aria-expanded="false" aria-controls="projects"
                 class="side-nav-link">
-                <span class="menu-icon"><i class="ti ti-briefcase"></i></span>
+                <span class="menu-icon"><i class="ti ti-checklist"></i></span>
                 <span class="menu-text" data-lang="projects">Approval</span>
                 <span class="menu-arrow"></span>
             </a>
