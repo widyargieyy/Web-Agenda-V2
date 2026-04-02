@@ -1,0 +1,496 @@
+🖥️ HALAMAN 1 — DASHBOARD (Overview)
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  🏛️  SIMAGA — Sistem Informasi Manajemen Agenda                              ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  ☰  [Logo/Nama Instansi]                        🔔 3  |  👤 Budi Santoso  ▼ ║
+║                                                 (notifications.is_read=0)    ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Dashboard                                             ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────   ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐    ║
+║                     ║  │  📅 Total    │ │  ✅ Bulan    │ │  📁 Dok.     │   ║
+║  📅 Agenda          ║  │  Agenda      │ │  Ini         │ │  Terupload   │    ║
+║    › Lihat Agenda   ║  │              │ │              │ │              │  ║
+║    › Upload Dok.    ║  │     24       │ │      8       │ │      5       │  ║
+║                     ║  │ agendas      │ │ agendas      │ │ agenda_      │  ║
+║  🔔 Notifikasi      ║  │ status=      │ │ date=bln ini │ │ documenta-   │  ║
+║     (3 belum dibaca)║  │ APPROVED     │ │ unit_id=mine │ │ tions        │  ║
+║                     ║  └──────────────┘ └──────────────┘ └──────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📅 Agenda Mendatang (agendas.date >= today)    │  ║
+║                     ║  │  agendas JOIN categories, locations/place        │  ║
+║                     ║  ├──────────────┬──────────────────┬────────┬──────┤  ║
+║                     ║  │ Tanggal      │ Judul            │ Lokasi │ Kat. │  ║
+║                     ║  │ (date)       │ (title)          │(loc/   │(cate-│  ║
+║                     ║  │              │                  │ place) │gory) │  ║
+║                     ║  ├──────────────┼──────────────────┼────────┼──────┤  ║
+║                     ║  │ 20 Mar 2025  │ Rapat Koordinasi │ Aula A │ Rapat│  ║
+║                     ║  │ 22 Mar 2025  │ Sosialisasi Prog │ Online │ Sos. │  ║
+║                     ║  │ 25 Mar 2025  │ Pelatihan SDM    │ Lt. 3  │ Lat. │  ║
+║                     ║  ├──────────────┴──────────────────┴────────┴──────┤  ║
+║                     ║  │                       [Lihat Semua Agenda →]     │ ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  🔔 Notifikasi Terbaru (notifications terbaru)  │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │ 🟢 Agenda "Rapat Koordinasi" telah disetujui    │  ║
+║                     ║  │    type=approved | 19 Mar 2025 14:30            │  ║
+║                     ║  │ 🟢 Agenda "Pelatihan SDM" telah disetujui       │  ║
+║                     ║  │    type=approved | 18 Mar 2025 09:00            │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │                    [Lihat Semua Notifikasi →]    │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+
+🖥️ HALAMAN 2 — DAFTAR AGENDA
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                      🔔 3  |  👤 Budi Santoso  ▼ ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Daftar Agenda                                         ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌──── Filter ──────────────────────────────────────┐ ║
+║                     ║  │                                                   │ ║
+║  📅 Agenda          ║  │  Kategori  : [Semua Kategori           ▼]        │ ║
+║  › Lihat Agenda  ◄  ║  │              (categories.name)                   │ ║
+║    › Upload Dok.    ║  │                                                   │ ║
+║                     ║  │  Tanggal   : [DD/MM/YYYY]  s/d  [DD/MM/YYYY]    │ ║
+║  🔔 Notifikasi      ║  │              (agendas.date)                      │ ║
+║                     ║  │                                                   │ ║
+║                     ║  │  Instansi  : [Semua Instansi           ▼]        │ ║
+║                     ║  │              (instansi.name)                     │ ║
+║                     ║  │                                                   │ ║
+║                     ║  │                        [🔍 Cari]  [↺ Reset]      │ ║
+║                     ║  └───────────────────────────────────────────────────┘ ║
+║                     ║                                                        ║
+║                     ║  ┌───────────────────────────────────────────────────┐ ║
+║                     ║  │ No │ Tanggal   │ Judul         │ Kategori │ Aksi  │ ║
+║                     ║  │    │(date)     │(title)        │(cat.name)│       │ ║
+║                     ║  ├────┼───────────┼───────────────┼──────────┼───────┤ ║
+║                     ║  │  1 │20/03/2025 │Rapat          │ Rapat    │[👁 Det│ ║
+║                     ║  │    │09.00-12.00│Koordinasi     │          │ail]   │ ║
+║                     ║  │    │(start_time│Bidang..       │          │[📥 DL]│ ║
+║                     ║  │    │-end_time) │               │          │       │ ║
+║                     ║  ├────┼───────────┼───────────────┼──────────┼───────┤ ║
+║                     ║  │  2 │22/03/2025 │Sosialisasi    │ Sosiali- │[👁 Det│ ║
+║                     ║  │    │08.00-10.00│Program Kerja  │ sasi     │ail]   │ ║
+║                     ║  │    │           │               │          │[📥 DL]│ ║
+║                     ║  ├────┼───────────┼───────────────┼──────────┼───────┤ ║
+║                     ║  │  3 │25/03/2025 │Pelatihan SDM  │ Pelatihan│[👁 Det│ ║
+║                     ║  │    │13.00-16.00│Triwulan I     │          │ail]   │ ║
+║                     ║  │    │           │               │          │[📥 DL]│ ║
+║                     ║  ├────┴───────────┴───────────────┴──────────┴───────┤ ║
+║                     ║  │  Menampilkan 3 dari 24 agenda                     │ ║
+║                     ║  │  « 1  2  3 »                      [10 ▼] per hal. │ ║
+║                     ║  └───────────────────────────────────────────────────┘ ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+
+🖥️ HALAMAN 3 — DETAIL AGENDA
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                      🔔 3  |  👤 Budi Santoso  ▼ ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Detail Agenda                      [← Kembali]       ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  Rapat Koordinasi Bidang Perencanaan            │  ║
+║  📅 Agenda          ║  │  agendas.title                                  │  ║
+║    › Lihat Agenda ◄ ║  │                              ┌─────────────────┐│  ║
+║    › Upload Dok.    ║  │                              │  ✅  APPROVED   ││  ║
+║                     ║  │                              │  agendas.status ││  ║
+║  🔔 Notifikasi      ║  │                              └─────────────────┘│  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │  INFORMASI AGENDA                               │  ║
+║                     ║  ├───────────────────────┬─────────────────────────┤  ║
+║                     ║  │ 📅 Tanggal            │ 20 Maret 2025           │  ║
+║                     ║  │    agendas.date        │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ ⏰ Waktu              │ 09.00 - 12.00           │  ║
+║                     ║  │    start_time-end_time │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ 📍 Lokasi             │ Aula A, Kantor Dinas    │  ║
+║                     ║  │    locations.name ATAU │                         │  ║
+║                     ║  │    agendas.place       │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ 🏷️  Kategori           │ Rapat                   │  ║
+║                     ║  │    categories.name     │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ 🏢 Instansi            │ Dinas Contoh            │  ║
+║                     ║  │    instansi.name       │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ 🏬 Unit/Bidang         │ Bidang Perencanaan      │  ║
+║                     ║  │    units.name          │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ 👤 Dibuat Oleh         │ Operator A              │  ║
+║                     ║  │    users.name          │                         │  ║
+║                     ║  │    (created_by → users)│                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ ✔️  Disetujui Oleh      │ Kabid B                 │  ║
+║                     ║  │    users.name          │ 19/03/2025 14:30        │  ║
+║                     ║  │    (approved_by→users) │ agendas.approved_at     │  ║
+║                     ║  ├───────────────────────┴─────────────────────────┤  ║
+║                     ║  │ 📝 Deskripsi                                    │  ║
+║                     ║  │    agendas.description                          │  ║
+║                     ║  │    Rapat koordinasi membahas rencana kerja      │  ║
+║                     ║  │    triwulan pertama tahun 2025...               │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  👥 Peserta (agenda_participants)                │  ║
+║                     ║  ├───────────┬──────────────────┬───────────────────┤  ║
+║                     ║  │ Nama      │ Instansi         │ Jabatan           │  ║
+║                     ║  │(user.name │(instansi_name)   │(role)             │  ║
+║                     ║  │ atau name)│                  │                   │  ║
+║                     ║  ├───────────┼──────────────────┼───────────────────┤  ║
+║                     ║  │ Budi S.   │ Dinas Contoh     │ Kepala Bidang     │  ║
+║                     ║  │ Ani W.    │ Dinas Contoh     │ Staff             │  ║
+║                     ║  │ Candra P. │ Instansi Luar    │ Narasumber        │  ║
+║                     ║  └───────────┴──────────────────┴───────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📎 Lampiran (agenda_attachments)               │  ║
+║                     ║  ├──────────────────────────────┬──────────────────┤  ║
+║                     ║  │ Nama File (filename)         │ Aksi             │  ║
+║                     ║  ├──────────────────────────────┼──────────────────┤  ║
+║                     ║  │ 📄 Undangan_Rapat_20Mar.pdf  │ [📥 Download]    │  ║
+║                     ║  │    is_primary = true         │                  │  ║
+║                     ║  │ 📄 Agenda_Rapat.pdf          │ [📥 Download]    │  ║
+║                     ║  │    is_primary = false        │                  │  ║
+║                     ║  └──────────────────────────────┴──────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📸 Dokumentasi Pasca Kegiatan                  │  ║
+║                     ║  │     (agenda_documentations)                     │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │  File yg sudah diupload:                        │  ║
+║                     ║  │  📷 foto_kegiatan.jpg  — "Sesi pembukaan"       │  ║
+║                     ║  │     file_type=Foto | uploaded_by=Budi S.        │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │  Upload Baru:                                   │  ║
+║                     ║  │  ┌───────────────────────────────────────────┐  │  ║
+║                     ║  │  │ Tipe File : ( ) Foto  ( ) PDF  ( ) Notulen│  │  ║
+║                     ║  │  │             (file_type)                   │  │  ║
+║                     ║  │  │ Pilih File: [📂 Browse...           ]     │  │  ║
+║                     ║  │  │             (filename, filepath)          │  │  ║
+║                     ║  │  │ Caption   : [..............................] │  │  ║
+║                     ║  │  │             (agenda_documentations.caption)│  │  ║
+║                     ║  │  │                      [📤 Upload Dokumentasi]│  │  ║
+║                     ║  │  └───────────────────────────────────────────┘  │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+
+🖥️ HALAMAN 4 — NOTIFIKASI
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                      🔔 3  |  👤 Budi Santoso  ▼ ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Notifikasi                                            ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  [Tandai Semua Dibaca]                                 ║
+║                     ║  notifications.is_read = true (all)                   ║
+║  📅 Agenda          ║                                                        ║
+║    › Lihat Agenda   ║  ┌─────────────────────────────────────────────────┐  ║
+║    › Upload Dok.    ║  │ 🟢 BELUM DIBACA (is_read = false)               │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║  🔔 Notifikasi   ◄  ║  │ ● Agenda "Rapat Koordinasi" telah disetujui     │  ║
+║                     ║  │   type = approved | agenda_id → agendas.title   │  ║
+║                     ║  │   19 Mar 2025 14:30  [Lihat Agenda]             │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │ ● Agenda "Pelatihan SDM" telah disetujui        │  ║
+║                     ║  │   type = approved | 18 Mar 2025 09:00           │  ║
+║                     ║  │   [Lihat Agenda]                                │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │ ● Agenda "Sosialisasi" telah disetujui          │  ║
+║                     ║  │   type = approved | 17 Mar 2025 11:00           │  ║
+║                     ║  │   [Lihat Agenda]                                │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │ 📭 SUDAH DIBACA (is_read = true)                │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │   Agenda "Rapat Evaluasi" telah disetujui       │  ║
+║                     ║  │   type = approved | 10 Mar 2025 08:00           │  ║
+║                     ║  │   [Lihat Agenda]                                │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+🖥️ HALAMAN — UPLOAD DOKUMENTASI
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                      🔔 3  |  👤 Budi Santoso  ▼ ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Upload Dokumentasi               [← Kembali]         ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📋 Informasi Agenda                            │  ║
+║  📅 Agenda          ║  ├───────────────────────┬─────────────────────────┤  ║
+║    › Lihat Agenda   ║  │ Judul Agenda          │ Rapat Koordinasi        │  ║
+║    › Upload Dok. ◄  ║  │ agendas.title         │ Bidang Perencanaan      │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║  🔔 Notifikasi      ║  │ Tanggal               │ 20 Maret 2025           │  ║
+║                     ║  │ agendas.date          │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ Status                │ ✅ COMPLETED            │  ║
+║                     ║  │ agendas.status        │                         │  ║
+║                     ║  └───────────────────────┴─────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📸 Dokumentasi Terupload                       │  ║
+║                     ║  │     agenda_documentations WHERE agenda_id = X   │  ║
+║                     ║  ├────┬──────────────────┬───────────┬─────────────┤  ║
+║                     ║  │ No │ Nama File        │ Tipe      │ Aksi        │  ║
+║                     ║  │    │ (filename)       │(file_type)│             │  ║
+║                     ║  ├────┼──────────────────┼───────────┼─────────────┤  ║
+║                     ║  │  1 │ foto_pembukaan   │ 📷 Foto   │ [👁 Lihat]  │  ║
+║                     ║  │    │ .jpg             │           │ [🗑 Hapus]  │  ║
+║                     ║  │    │ Caption:         │           │             │  ║
+║                     ║  │    │ "Sesi pembukaan" │           │             │  ║
+║                     ║  │    │ (caption)        │           │             │  ║
+║                     ║  ├────┼──────────────────┼───────────┼─────────────┤  ║
+║                     ║  │  2 │ notulen_rapat    │ 📄 Notulen│ [👁 Lihat]  │  ║
+║                     ║  │    │ .pdf             │           │ [🗑 Hapus]  │  ║
+║                     ║  │    │ Caption:         │           │             │  ║
+║                     ║  │    │ "Notulen resmi"  │           │             │  ║
+║                     ║  │    │ (caption)        │           │             │  ║
+║                     ║  ├────┴──────────────────┴───────────┴─────────────┤  ║
+║                     ║  │  Total: 2 file terupload                        │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📤 Upload Dokumentasi Baru                     │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Tipe Dokumentasi *                             │  ║
+║                     ║  │  (agenda_documentations.file_type)              │  ║
+║                     ║  │  ┌─────────────────────────────────────────┐   │  ║
+║                     ║  │  │ ( ) 📷 Foto   ( ) 📄 PDF  ( ) 📝 Notulen│   │  ║
+║                     ║  │  └─────────────────────────────────────────┘   │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Pilih File *                                   │  ║
+║                     ║  │  (agenda_documentations.filename & filepath)    │  ║
+║                     ║  │  ┌─────────────────────────────────────────┐   │  ║
+║                     ║  │  │ 📂 [Pilih File...]                      │   │  ║
+║                     ║  │  │ Format: jpg, png, pdf | Maks: 5MB       │   │  ║
+║                     ║  │  └─────────────────────────────────────────┘   │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Caption                                        │  ║
+║                     ║  │  (agenda_documentations.caption - opsional)     │  ║
+║                     ║  │  ┌─────────────────────────────────────────┐   │  ║
+║                     ║  │  │ Masukkan keterangan file...             │   │  ║
+║                     ║  │  └─────────────────────────────────────────┘   │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  ⚠️  Catatan:                                   │  ║
+║                     ║  │  • Upload hanya untuk agenda COMPLETED          │  ║
+║                     ║  │  • agendas.status = 'COMPLETED'                 │  ║
+║                     ║  │  • uploaded_by otomatis terisi user login       │  ║
+║                     ║  │  • uploaded_at otomatis terisi timestamp        │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │              [✖ Batal]  [📤 Upload Sekarang]   │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+
+📌 HALAMAN — DAFTAR AGENDA UNTUK UPLOAD (index)
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                      🔔 3  |  👤 Budi Santoso  ▼ ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Upload Dokumentasi                                    ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║  Pilih agenda yang ingin ditambahkan dokumentasinya   ║
+║  🏠 Dashboard       ║                                                        ║
+║                     ║  ┌──── Filter ──────────────────────────────────────┐ ║
+║  📅 Agenda          ║  │  Tanggal : [DD/MM/YYYY]  s/d  [DD/MM/YYYY]      │ ║
+║    › Lihat Agenda   ║  │            (agendas.date)                        │ ║
+║    › Upload Dok. ◄  ║  │                             [🔍 Cari] [↺ Reset]  │ ║
+║                     ║  └───────────────────────────────────────────────────┘ ║
+║  🔔 Notifikasi      ║                                                        ║
+║                     ║  ┌───────────────────────────────────────────────────┐ ║
+║                     ║  │ No │ Tanggal   │ Judul Agenda    │ Dok. │ Aksi    │ ║
+║                     ║  │    │(date)     │(title)          │Upload│         │ ║
+║                     ║  ├────┼───────────┼─────────────────┼──────┼─────────┤ ║
+║                     ║  │  1 │20/03/2025 │ Rapat           │  2   │[📤 Kelola│ ║
+║                     ║  │    │           │ Koordinasi...   │ file │  Dok.]  │ ║
+║                     ║  │    │           │ ✅ COMPLETED    │      │         │ ║
+║                     ║  ├────┼───────────┼─────────────────┼──────┼─────────┤ ║
+║                     ║  │  2 │15/03/2025 │ Pelatihan SDM   │  0   │[📤 Kelola│ ║
+║                     ║  │    │           │ Triwulan I      │ file │  Dok.]  │ ║
+║                     ║  │    │           │ ✅ COMPLETED    │      │         │ ║
+║                     ║  ├────┼───────────┼─────────────────┼──────┼─────────┤ ║
+║                     ║  │  3 │10/03/2025 │ Sosialisasi     │  1   │[📤 Kelola│ ║
+║                     ║  │    │           │ Program Kerja   │ file │  Dok.]  │ ║
+║                     ║  │    │           │ ✅ COMPLETED    │      │         │ ║
+║                     ║  ├────┴───────────┴─────────────────┴──────┴─────────┤ ║
+║                     ║  │  Menampilkan 3 dari 10 agenda selesai             │ ║
+║                     ║  │  « 1  2 »                          [10 ▼] per hal.│ ║
+║                     ║  └───────────────────────────────────────────────────┘ ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+
+SIMAGA/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Auth/
+│   │   │   │   └── AuthController.php
+│   │   │   ├── Admin/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   ├── UserController.php
+│   │   │   │   └── AgendaController.php
+│   │   │   ├── Operator/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   └── AgendaController.php
+│   │   │   ├── Kabid/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   └── ApprovalController.php
+│   │   │   ├── Staff/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   ├── AgendaController.php
+│   │   │   │   └── DocumentationController.php
+│   │   │   └── Master/
+│   │   │       ├── CategoryController.php
+│   │   │       ├── LocationController.php
+│   │   │       ├── InstansiController.php
+│   │   │       └── UnitController.php
+│   │   │
+│   │   ├── Middleware/
+│   │   │   ├── RoleMiddleware.php        ← cek roles (RBAC)
+│   │   │   ├── ActiveUserMiddleware.php  ← cek is_active
+│   │   │   └── CheckUnitAccess.php       ← cek unit_id
+│   │   │
+│   │   └── Requests/
+│   │       ├── Auth/
+│   │       │   └── LoginRequest.php
+│   │       ├── Agenda/
+│   │       │   ├── StoreAgendaRequest.php
+│   │       │   ├── UpdateAgendaRequest.php
+│   │       │   └── ApprovalRequest.php
+│   │       ├── User/
+│   │       │   ├── StoreUserRequest.php
+│   │       │   └── UpdateUserRequest.php
+│   │       └── Master/
+│   │           ├── CategoryRequest.php
+│   │           ├── LocationRequest.php
+│   │           ├── InstansiRequest.php
+│   │           └── UnitRequest.php
+│   │
+│   ├── Models/
+│   │   ├── User.php                  ← users (role_id, unit_id)
+│   │   ├── Role.php                  ← roles
+│   │   ├── Unit.php                  ← units
+│   │   ├── Category.php              ← categories
+│   │   ├── Location.php              ← locations
+│   │   ├── Instansi.php              ← instansi
+│   │   ├── Agenda.php                ← agendas (model inti)
+│   │   ├── AgendaParticipant.php     ← agenda_participants
+│   │   ├── AgendaAttachment.php      ← agenda_attachments
+│   │   ├── AgendaDocumentation.php   ← agenda_documentations
+│   │   └── Notification.php          ← notifications
+│   │
+│   └── Services/                     ← business logic layer
+│       ├── AgendaService.php         ← buat, edit, kirim agenda
+│       ├── ApprovalService.php       ← approve/reject + notif
+│       ├── NotificationService.php   ← kirim & kelola notifikasi
+│       ├── AttachmentService.php     ← upload & validasi file
+│       └── DocumentationService.php  ← upload dokumentasi
+│
+├── database/
+│   ├── migrations/
+│   │   ├── xxxx_create_roles_table.php
+│   │   ├── xxxx_create_units_table.php
+│   │   ├── xxxx_create_users_table.php
+│   │   ├── xxxx_create_categories_table.php
+│   │   ├── xxxx_create_locations_table.php
+│   │   ├── xxxx_create_instansi_table.php
+│   │   ├── xxxx_create_agendas_table.php
+│   │   ├── xxxx_create_agenda_participants_table.php
+│   │   ├── xxxx_create_agenda_attachments_table.php
+│   │   ├── xxxx_create_agenda_documentations_table.php
+│   │   └── xxxx_create_notifications_table.php
+│   │
+│   └── seeders/
+│       ├── DatabaseSeeder.php
+│       ├── RoleSeeder.php            ← seed 4 role default
+│       ├── UnitSeeder.php
+│       └── AdminSeeder.php           ← seed akun admin awal
+│
+├── resources/
+│   └── views/
+│       ├── layouts/
+│       │   ├── app.blade.php         ← layout utama (sidebar+navbar)
+│       │   ├── auth.blade.php        ← layout halaman login
+│       │   ├── _sidebar.blade.php    ← sidebar navigasi
+│       │   └── _navbar.blade.php     ← top navbar + notif + user
+│       │
+│       ├── auth/
+│       │   └── login.blade.php
+│       │
+│       ├── admin/
+│       │   ├── dashboard.blade.php
+│       │   ├── users/
+│       │   │   ├── index.blade.php
+│       │   │   ├── create.blade.php
+│       │   │   └── edit.blade.php
+│       │   ├── agendas/
+│       │   │   ├── index.blade.php
+│       │   │   └── show.blade.php
+│       │   └── master/
+│       │       ├── categories/
+│       │       │   ├── index.blade.php
+│       │       │   └── form.blade.php
+│       │       ├── locations/
+│       │       │   ├── index.blade.php
+│       │       │   └── form.blade.php
+│       │       ├── instansi/
+│       │       │   ├── index.blade.php
+│       │       │   └── form.blade.php
+│       │       └── units/
+│       │           ├── index.blade.php
+│       │           └── form.blade.php
+│       │
+│       ├── operator/
+│       │   ├── dashboard.blade.php
+│       │   └── agendas/
+│       │       ├── index.blade.php
+│       │       ├── create.blade.php
+│       │       ├── edit.blade.php
+│       │       └── show.blade.php
+│       │
+│       ├── kabid/
+│       │   ├── dashboard.blade.php
+│       │   └── approvals/
+│       │       ├── index.blade.php
+│       │       └── show.blade.php
+│       │
+│       ├── staff/
+│       │   ├── dashboard.blade.php
+│       │   └── agendas/
+│       │       ├── index.blade.php
+│       │       ├── show.blade.php
+│       │       └── documentation.blade.php
+│       │
+│       └── notifications/
+│           └── index.blade.php       ← shared semua role
+│
+├── routes/
+│   ├── web.php                       ← entry point routing
+│   └── partials/
+│       ├── auth.php                  ← route login/logout
+│       ├── admin.php                 ← route khusus admin
+│       ├── operator.php              ← route khusus operator
+│       ├── kabid.php                 ← route khusus kabid
+│       └── staff.php                 ← route khusus staff
+│
+├── storage/
+│   └── app/
+│       └── public/
+│           ├── attachments/          ← agenda_attachments.filepath
+│           └── documentations/       ← agenda_documentations.filepath
+│
+└── config/
+    └── simaga.php                    ← konfigurasi custom
+                                         (max file size, allowed
+                                          mime types, dll)

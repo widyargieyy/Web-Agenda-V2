@@ -1,0 +1,384 @@
+🖥️ HALAMAN 1 — DASHBOARD (Overview)
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                    🔔 5  |  👤 Dr. Hendra K.  ▼  ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Dashboard Kabid                                       ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║  Selamat datang, Dr. Hendra K. — Bidang Perencanaan   ║
+║  🏠 Dashboard    ◄  ║  units.name                                            ║
+║                     ║                                                        ║
+║  ✅ Approval        ║  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌──────┐ ║
+║    › Agenda Pending ║  │ ⏳ Pending │ │ ✅ Approved│ │ ✔️ Completed│ │ ❌   │ ║
+║    › Riwayat        ║  │            │ │            │ │            │ │Cancel│ ║
+║                     ║  │     5      │ │     18     │ │     10     │ │  2   │ ║
+║  📅 Agenda          ║  │ agendas    │ │ agendas    │ │ agendas    │ │agend.│ ║
+║    › Agenda Approved║  │ status=    │ │ status=    │ │ status=    │ │stat= ║ ║
+║    › Rekap Bulanan  ║  │ PENDING    │ │ APPROVED   │ │ COMPLETED  │ │CANC. │ ║
+║                     ║  │ unit=mine  │ │ unit=mine  │ │ unit=mine  │ │      │ ║
+║  🔔 Notifikasi      ║  └────────────┘ └────────────┘ └────────────┘ └──────┘ ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  ⏳ Agenda Menunggu Persetujuan                  │  ║
+║                     ║  │  agendas WHERE status='PENDING'                 │  ║
+║                     ║  │  AND unit_id = kabid.unit_id                    │  ║
+║                     ║  │  ORDER BY created_at ASC                        │  ║
+║                     ║  ├──────────────────────┬──────────┬───────────────┤  ║
+║                     ║  │ Judul (title)        │ Operator │ Tgl Kirim     │  ║
+║                     ║  │                      │(created_ │(updated_at    │  ║
+║                     ║  │                      │ by→users)│ saat PENDING) │  ║
+║                     ║  ├──────────────────────┼──────────┼───────────────┤  ║
+║                     ║  │ Rapat Evaluasi Prog. │ Ani W.   │ 19/03 09.00   │  ║
+║                     ║  │ Sosialisasi Dana     │ Budi S.  │ 18/03 13.30   │  ║
+║                     ║  │ Workshop Perencanaan │ Candra P.│ 17/03 10.00   │  ║
+║                     ║  ├──────────────────────┴──────────┴───────────────┤  ║
+║                     ║  │                    [Lihat Semua Agenda Pending →]│  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                       ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📊 Rekap Agenda Bulan Ini — Maret 2025         │  ║
+║                     ║  │  agendas WHERE MONTH(date)=now, unit_id=mine    │  ║
+║                     ║  ├──────────────┬───────────────────────────────────┤  ║
+║                     ║  │ Status       │ Jumlah                            │  ║
+║                     ║  ├──────────────┼───────────────────────────────────┤  ║
+║                     ║  │ ⏳ Pending   │ ████░░░░░░  5                     │  ║
+║                     ║  │ ✅ Approved  │ ████████░░  8                     │  ║
+║                     ║  │ ✔️ Completed  │ ██████░░░░  6                     │  ║
+║                     ║  │ ❌ Rejected  │ █░░░░░░░░░  1                     │  ║
+║                     ║  │ 🚫 Cancelled │ ░░░░░░░░░░  0                     │  ║
+║                     ║  ├──────────────┴───────────────────────────────────┤  ║
+║                     ║  │                         [Lihat Rekap Bulanan →]  │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+🖥️ HALAMAN 2 — DAFTAR AGENDA PENDING
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                    🔔 5  |  👤 Dr. Hendra K.  ▼  ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Agenda Menunggu Persetujuan                           ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌──── Filter ──────────────────────────────────────┐ ║
+║                     ║  │  Kategori : [Semua Kategori          ▼]          │ ║
+║  ✅ Approval        ║  │             (categories.name)                    │ ║
+║  › Agenda Pending ◄ ║  │  Tanggal  : [DD/MM/YYYY]  s/d  [DD/MM/YYYY]    │ ║
+║    › Riwayat        ║  │             (agendas.date)                       │ ║
+║                     ║  │                            [🔍 Cari] [↺ Reset]   │ ║
+║  📅 Agenda          ║  └───────────────────────────────────────────────────┘ ║
+║    › Agenda Approved║                                                        ║
+║    › Rekap Bulanan  ║  ┌───────────────────────────────────────────────────┐ ║
+║                     ║  │No│Tgl Agenda│Judul       │Operator  │Tgl Kirim│Aksi│ ║
+║  🔔 Notifikasi      ║  │  │(date)    │(title)     │(created_ │(updated_│    │ ║
+║                     ║  │  │          │            │by→users) │at)      │    │ ║
+║                     ║  ├──┼──────────┼────────────┼──────────┼─────────┼────┤ ║
+║                     ║  │1 │20/03/2025│Rapat       │Ani W.    │19/03    │[👁 │ ║
+║                     ║  │  │09.00-12. │Evaluasi    │          │09.00    │Det]│ ║
+║                     ║  │  │          │Program     │          │         │    │ ║
+║                     ║  ├──┼──────────┼────────────┼──────────┼─────────┼────┤ ║
+║                     ║  │2 │22/03/2025│Sosialisasi │Budi S.   │18/03    │[👁 │ ║
+║                     ║  │  │08.00-10. │Dana Desa   │          │13.30    │Det]│ ║
+║                     ║  ├──┼──────────┼────────────┼──────────┼─────────┼────┤ ║
+║                     ║  │3 │25/03/2025│Workshop    │Candra P. │17/03    │[👁 │ ║
+║                     ║  │  │13.00-15. │Perencanaan │          │10.00    │Det]│ ║
+║                     ║  ├──┴──────────┴────────────┴──────────┴─────────┴────┤ ║
+║                     ║  │  Menampilkan 3 dari 5 agenda pending               │ ║
+║                     ║  │  « 1 »                              [10 ▼] per hal.│ ║
+║                     ║  └───────────────────────────────────────────────────┘ ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+🖥️ HALAMAN 3 — DETAIL AGENDA + APPROVAL
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                    🔔 5  |  👤 Dr. Hendra K.  ▼  ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Detail Agenda                       [← Kembali]      ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  Rapat Evaluasi Program Kerja                   │  ║
+║  ✅ Approval        ║  │  agendas.title                                  │  ║
+║  › Agenda Pending ◄ ║  │                          ┌──────────────────┐   │  ║
+║    › Riwayat        ║  │                          │  ⏳  PENDING     │   │  ║
+║                     ║  │                          │  agendas.status  │   │  ║
+║  📅 Agenda          ║  │                          └──────────────────┘   │  ║
+║    › Agenda Approved║  ├─────────────────────────────────────────────────┤  ║
+║    › Rekap Bulanan  ║  │  INFORMASI AGENDA                               │  ║
+║                     ║  ├───────────────────────┬─────────────────────────┤  ║
+║  🔔 Notifikasi      ║  │ 📅 Tanggal            │ 20 Maret 2025           │  ║
+║                     ║  │    agendas.date        │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ ⏰ Waktu              │ 09.00 - 12.00           │  ║
+║                     ║  │    start_time-end_time │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ 📍 Lokasi             │ Aula A, Kantor Dinas    │  ║
+║                     ║  │    locations.name ATAU │                         │  ║
+║                     ║  │    agendas.place       │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ 🏷️  Kategori           │ Rapat                   │  ║
+║                     ║  │    categories.name     │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ 🏢 Instansi            │ Dinas Contoh            │  ║
+║                     ║  │    instansi.name       │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ 🏬 Unit/Bidang         │ Bidang Perencanaan      │  ║
+║                     ║  │    units.name          │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ 👤 Dibuat Oleh         │ Ani Widyawati           │  ║
+║                     ║  │    users.name          │                         │  ║
+║                     ║  │    (created_by→users)  │                         │  ║
+║                     ║  ├───────────────────────┴─────────────────────────┤  ║
+║                     ║  │ 📝 Deskripsi                                    │  ║
+║                     ║  │    agendas.description                          │  ║
+║                     ║  │    Rapat evaluasi membahas capaian program      │  ║
+║                     ║  │    kerja triwulan pertama tahun 2025...         │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  👥 Peserta (agenda_participants)                │  ║
+║                     ║  ├──────────────────┬──────────────────┬───────────┤  ║
+║                     ║  │ Nama             │ Instansi         │ Jabatan   │  ║
+║                     ║  │ (user.name/name) │ (instansi_name)  │ (role)    │  ║
+║                     ║  ├──────────────────┼──────────────────┼───────────┤  ║
+║                     ║  │ Ani Widyawati    │ Dinas Contoh     │ Operator  │  ║
+║                     ║  │ Budi Santoso     │ Dinas Contoh     │ Staff     │  ║
+║                     ║  │ Tamu Eksternal   │ Instansi Luar    │ Undangan  │  ║
+║                     ║  └──────────────────┴──────────────────┴───────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📎 Lampiran (agenda_attachments)               │  ║
+║                     ║  ├──────────────────────────────────┬──────────────┤  ║
+║                     ║  │ Nama File (filename)             │ Aksi         │  ║
+║                     ║  ├──────────────────────────────────┼──────────────┤  ║
+║                     ║  │ 📄 Undangan_Rapat.pdf            │ [👁 Lihat]   │  ║
+║                     ║  │    is_primary = true             │ [📥 Download]│  ║
+║                     ║  │ 📄 Agenda_Rapat.pdf              │ [👁 Lihat]   │  ║
+║                     ║  │    is_primary = false            │ [📥 Download]│  ║
+║                     ║  └──────────────────────────────────┴──────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  ✅ Keputusan Approval                           │  ║
+║                     ║  │  agendas.approved_by, approved_at,              │  ║
+║                     ║  │  rejected_reason, status                        │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  [ ✅ SETUJUI AGENDA ]  [ ❌ TOLAK AGENDA ]    │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  ── Jika TOLAK, isi alasan penolakan: ──────── │  ║
+║                     ║  │  ┌─────────────────────────────────────────┐   │  ║
+║                     ║  │  │ Catatan Penolakan *                     │   │  ║
+║                     ║  │  │ (agendas.rejected_reason)               │   │  ║
+║                     ║  │  │                                         │   │  ║
+║                     ║  │  │ Tuliskan alasan penolakan agenda...     │   │  ║
+║                     ║  │  │                                         │   │  ║
+║                     ║  │  └─────────────────────────────────────────┘   │  ║
+║                     ║  │  ⚠️  Wajib diisi jika memilih TOLAK             │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  approved_by  → auth()->user()->id (hidden)    │  ║
+║                     ║  │  approved_at  → now() (hidden/auto)            │  ║
+║                     ║  │                                                 │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+
+
+🖥️ HALAMAN 4 — AGENDA APPROVED (Update Status)
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                    🔔 5  |  👤 Dr. Hendra K.  ▼  ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Agenda Disetujui                                      ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌──── Filter ──────────────────────────────────────┐ ║
+║                     ║  │  Kategori : [Semua Kategori          ▼]          │ ║
+║  ✅ Approval        ║  │  Tanggal  : [DD/MM/YYYY]  s/d  [DD/MM/YYYY]    │ ║
+║    › Agenda Pending ║  │  Status   : [APPROVED              ▼]           │ ║
+║    › Riwayat        ║  │             (APPROVED/COMPLETED/CANCELLED)       │ ║
+║                     ║  │                            [🔍 Cari] [↺ Reset]   │ ║
+║  📅 Agenda          ║  └───────────────────────────────────────────────────┘ ║
+║  › Agenda Approved◄ ║                                                        ║
+║    › Rekap Bulanan  ║  ┌───────────────────────────────────────────────────┐ ║
+║                     ║  │No│Tgl Agenda│Judul       │Status    │Aksi         │ ║
+║  🔔 Notifikasi      ║  ├──┼──────────┼────────────┼──────────┼─────────────┤ ║
+║                     ║  │1 │20/03/2025│Rapat       │✅APPROVED│[👁 Detail]  │ ║
+║                     ║  │  │          │Koordinasi  │          │[✔️ Selesai]  │ ║
+║                     ║  │  │          │            │          │[🚫 Batalkan]│ ║
+║                     ║  ├──┼──────────┼────────────┼──────────┼─────────────┤ ║
+║                     ║  │2 │15/03/2025│Pelatihan   │✔️COMPLETED│[👁 Detail]  │ ║
+║                     ║  │  │          │SDM         │          │             │ ║
+║                     ║  ├──┼──────────┼────────────┼──────────┼─────────────┤ ║
+║                     ║  │3 │10/03/2025│Sosialisasi │🚫CANCELLED│[👁 Detail]  │ ║
+║                     ║  │  │          │Program     │          │             │ ║
+║                     ║  ├──┴──────────┴────────────┴──────────┴─────────────┤ ║
+║                     ║  │  Menampilkan 3 dari 18 agenda                     │ ║
+║                     ║  │  « 1  2 »                           [10▼] per hal.│ ║
+║                     ║  └───────────────────────────────────────────────────┘ ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+🖥️ HALAMAN 5 — REKAP AGENDA BULANAN
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                    🔔 5  |  👤 Dr. Hendra K.  ▼  ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Rekap Agenda Bulanan                                  ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌──── Filter ──────────────────────────────────────┐ ║
+║                     ║  │  Bulan : [Maret      ▼]  Tahun : [2025  ▼]      │ ║
+║  ✅ Approval        ║  │          (agendas.date)                           │ ║
+║    › Agenda Pending ║  │                                      [🔍 Tampilkan]│ ║
+║    › Riwayat        ║  └───────────────────────────────────────────────────┘ ║
+║                     ║                                                        ║
+║  📅 Agenda          ║  ┌─────────────────────────────────────────────────┐  ║
+║    › Agenda Approved║  │  📊 Ringkasan — Maret 2025                      │  ║
+║  › Rekap Bulanan ◄  ║  │  Bidang Perencanaan (units.name)                │  ║
+║                     ║  ├──────────────────────┬──────────────────────────┤  ║
+║  🔔 Notifikasi      ║  │ Total Agenda Masuk   │ 20                       │  ║
+║                     ║  │ ⏳ Pending           │  5                       │  ║
+║                     ║  │ ✅ Approved          │  8                       │  ║
+║                     ║  │ ✔️  Completed         │  6                       │  ║
+║                     ║  │ ❌ Rejected          │  1                       │  ║
+║                     ║  │ 🚫 Cancelled         │  0                       │  ║
+║                     ║  └──────────────────────┴──────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📋 Detail Rekap per Kategori                   │  ║
+║                     ║  │  agendas JOIN categories GROUP BY category_id   │  ║
+║                     ║  ├───────────────────┬────────┬────────┬───────────┤  ║
+║                     ║  │ Kategori          │Approved│Completed│ Total    │  ║
+║                     ║  │ (categories.name) │        │         │          │  ║
+║                     ║  ├───────────────────┼────────┼─────────┼──────────┤  ║
+║                     ║  │ Rapat             │   4    │    3    │    7     │  ║
+║                     ║  │ Sosialisasi       │   2    │    2    │    4     │  ║
+║                     ║  │ Pelatihan         │   2    │    1    │    3     │  ║
+║                     ║  │ Lainnya           │   0    │    0    │    0     │  ║
+║                     ║  ├───────────────────┼────────┼─────────┼──────────┤  ║
+║                     ║  │ Total             │   8    │    6    │   14     │  ║
+║                     ║  └───────────────────┴────────┴─────────┴──────────┘  ║
+║                     ║                                                       ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📋 Daftar Semua Agenda Bulan Ini               │  ║
+║                     ║  ├──┬──────────┬──────────────┬──────────┬─────────┤  ║
+║                     ║  │No│ Tanggal  │ Judul        │ Kategori │ Status  │  ║
+║                     ║  ├──┼──────────┼──────────────┼──────────┼─────────┤  ║
+║                     ║  │1 │01/03/2025│ Rapat Awal   │ Rapat    │✅Approved│  ║
+║                     ║  │2 │05/03/2025│ Sosialisasi  │ Sos.     │✔️Completed  ║
+║                     ║  │3 │10/03/2025│ Pelatihan    │ Pelatihan│✔️Completed  ║
+║                     ║  │  │ ...      │ ...          │ ...      │ ...     │  ║
+║                     ║  ├──┴──────────┴──────────────┴──────────┴─────────┤  ║
+║                     ║  │                           [📥 Export Rekap PDF]  │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+🖥️ HALAMAN — RIWAYAT APPROVAL
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                    🔔 5  |  👤 Dr. Hendra K.  ▼  ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Riwayat Approval                                      ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌──── Filter ──────────────────────────────────────┐ ║
+║                     ║  │  Status   : [Semua Status            ▼]          │ ║
+║  ✅ Approval        ║  │             (APPROVED/REJECTED/COMPLETED/         │ ║
+║    › Agenda Pending ║  │              CANCELLED)                          │ ║
+║    › Riwayat     ◄  ║  │                                                  │ ║
+║                     ║  │  Kategori : [Semua Kategori          ▼]          │ ║
+║  📅 Agenda          ║  │             (categories.name)                    │ ║
+║    › Agenda Approved║  │                                                  │ ║
+║    › Rekap Bulanan  ║  │  Tanggal  : [DD/MM/YYYY]  s/d  [DD/MM/YYYY]    │ ║
+║                     ║  │             (agendas.approved_at)                │ ║
+║  🔔 Notifikasi      ║  │                                                  │ ║
+║                     ║  │  Operator : [Semua Operator          ▼]          │ ║
+║                     ║  │             (users.name WHERE role=Operator,     │ ║
+║                     ║  │              unit_id=kabid.unit_id)              │ ║
+║                     ║  │                                                  │ ║
+║                     ║  │                            [🔍 Cari] [↺ Reset]   │ ║
+║                     ║  └───────────────────────────────────────────────────┘ ║
+║                     ║                                                        ║
+║                     ║  ┌───────────────────────────────────────────────────┐ ║
+║                     ║  │No│Tgl Agenda│Judul      │Operator │Status  │Aksi  │ ║
+║                     ║  │  │(date)    │(title)    │(created_│        │      │ ║
+║                     ║  │  │          │           │by→users)│        │      │ ║
+║                     ║  ├──┼──────────┼───────────┼─────────┼────────┼──────┤ ║
+║                     ║  │1 │20/03/2025│Rapat      │Ani W.   │✅APPRO-│[👁   │ ║
+║                     ║  │  │          │Evaluasi   │         │VED     │Detail│ ║
+║                     ║  │  │          │Program    │         │19/03   │]     │ ║
+║                     ║  │  │          │           │         │14.30   │      │ ║
+║                     ║  │  │          │           │         │approv- │      │ ║
+║                     ║  │  │          │           │         │ed_at   │      │ ║
+║                     ║  ├──┼──────────┼───────────┼─────────┼────────┼──────┤ ║
+║                     ║  │2 │18/03/2025│Sosialisasi│Budi S.  │❌REJEC-│[👁   │ ║
+║                     ║  │  │          │Dana Desa  │         │TED     │Detail│ ║
+║                     ║  │  │          │           │         │18/03   │]     │ ║
+║                     ║  │  │          │           │         │10.00   │      │ ║
+║                     ║  ├──┼──────────┼───────────┼─────────┼────────┼──────┤ ║
+║                     ║  │3 │15/03/2025│Pelatihan  │Candra P.│✔️COMPL-│[👁   │ ║
+║                     ║  │  │          │SDM        │         │ETED    │Detail│ ║
+║                     ║  │  │          │           │         │15/03   │]     │ ║
+║                     ║  │  │          │           │         │16.00   │      │ ║
+║                     ║  ├──┼──────────┼───────────┼─────────┼────────┼──────┤ ║
+║                     ║  │4 │10/03/2025│Workshop   │Ani W.   │🚫CANC- │[👁   │ ║
+║                     ║  │  │          │Perencanaan│         │ELLED   │Detail│ ║
+║                     ║  │  │          │           │         │10/03   │]     │ ║
+║                     ║  │  │          │           │         │08.00   │      │ ║
+║                     ║  ├──┴──────────┴───────────┴─────────┴────────┴──────┤ ║
+║                     ║  │  Menampilkan 4 dari 20 riwayat                    │ ║
+║                     ║  │  « 1  2 »                          [10 ▼] per hal.│ ║
+║                     ║  └───────────────────────────────────────────────────┘ ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+🖥️ HALAMAN — DETAIL RIWAYAT (Pop-up / Halaman)
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                    🔔 5  |  👤 Dr. Hendra K.  ▼  ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Detail Riwayat                      [← Kembali]       ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────   ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌─────────────────────────────────────────────────┐   ║
+║                     ║  │  Sosialisasi Dana Desa                          │   ║
+║  ✅ Approval        ║  │  agendas.title                                  │   ║
+║    › Agenda Pending ║  │                          ┌──────────────────┐   │  ║
+║    › Riwayat     ◄  ║  │                          │  ❌  REJECTED    │   │  ║
+║                     ║  │                          │  agendas.status  │   │  ║
+║  📅 Agenda          ║  │                          └──────────────────┘   │  ║
+║    › Agenda Approved║  ├─────────────────────────────────────────────────┤  ║
+║    › Rekap Bulanan  ║  │  INFORMASI AGENDA                               │  ║
+║                     ║  ├───────────────────────┬─────────────────────────┤  ║
+║  🔔 Notifikasi      ║  │ 📅 Tanggal            │ 18 Maret 2025           │  ║
+║                     ║  │ ⏰ Waktu              │ 08.00 - 10.00           │  ║
+║                     ║  │ 📍 Lokasi             │ Aula B                  │  ║
+║                     ║  │ 🏷️  Kategori           │ Sosialisasi             │  ║
+║                     ║  │ 🏢 Instansi            │ Dinas Contoh            │  ║
+║                     ║  │ 👤 Dibuat Oleh         │ Budi Santoso            │  ║
+║                     ║  │    (created_by→users)  │                         │  ║
+║                     ║  ├───────────────────────┴─────────────────────────┤  ║
+║                     ║  │ 📝 Deskripsi                                    │  ║
+║                     ║  │    agendas.description                          │  ║
+║                     ║  │    Sosialisasi program dana desa tahap I...     │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📋 Rekam Jejak Keputusan                       │  ║
+║                     ║  ├───────────────────────┬─────────────────────────┤  ║
+║                     ║  │ Diputuskan Oleh        │ Dr. Hendra K.           │  ║
+║                     ║  │ (approved_by→users)    │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ Waktu Keputusan        │ 18 Maret 2025, 10.00   │  ║
+║                     ║  │ (agendas.approved_at)  │                         │  ║
+║                     ║  ├───────────────────────┼─────────────────────────┤  ║
+║                     ║  │ Status Akhir           │ ❌ REJECTED             │  ║
+║                     ║  │ (agendas.status)       │                         │  ║
+║                     ║  ├───────────────────────┴─────────────────────────┤  ║
+║                     ║  │ 📝 Catatan Penolakan                            │  ║
+║                     ║  │    agendas.rejected_reason                      │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │    "Agenda tidak sesuai jadwal yang telah       │  ║
+║                     ║  │     ditetapkan. Mohon reschedule ke minggu      │  ║
+║                     ║  │     berikutnya."                                │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📎 Lampiran (agenda_attachments)               │  ║
+║                     ║  ├──────────────────────────────────┬──────────────┤  ║
+║                     ║  │ Nama File (filename)             │ Aksi         │  ║
+║                     ║  ├──────────────────────────────────┼──────────────┤  ║
+║                     ║  │ 📄 Undangan_Sosialisasi.pdf      │ [📥 Download]│  ║
+║                     ║  └──────────────────────────────────┴──────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+

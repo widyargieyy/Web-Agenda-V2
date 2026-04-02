@@ -1,0 +1,329 @@
+🖥️ HALAMAN 1 — DASHBOARD (Overview)
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                      🔔 2  |  👤 Ani Widyawati ▼ ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Dashboard Operator                                    ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────   ║
+║  ─────────────────  ║  Selamat datang, Ani Widyawati — Bidang Perencanaan    ║
+║  🏠 Dashboard    ◄  ║  units.name                                            ║
+║                     ║                                                        ║
+║  📅 Agenda          ║  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐  ║
+║    › Buat Agenda    ║  │ 📝 Draft │ │ ⏳Pending│ │ ✅Approv.│ │ ❌Reject.│ ║
+║    › Agenda Saya    ║  │          │ │          │ │          │ │          │  ║
+║                     ║  │    3     │ │    2     │ │    10    │ │    1     │ ║
+║  🔔 Notifikasi      ║  │ agendas  │ │ agendas  │ │ agendas  │ │ agendas  │ ║
+║                     ║  │ status=  │ │ status=  │ │ status=  │ │ status=  │ ║
+║                     ║  │ DRAFT    │ │ PENDING  │ │ APPROVED │ │ REJECTED │ ║
+║                     ║  │created_by│ │created_by│ │created_by│ │created_by│ ║
+║                     ║  │=auth()   │ │=auth()   │ │=auth()   │ │=auth()   │ ║
+║                     ║  └──────────┘ └──────────┘ └──────────┘ └──────────┘ ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📝 Agenda Draft — Belum Dikirim                │  ║
+║                     ║  │  agendas WHERE status='DRAFT'                   │  ║
+║                     ║  │  AND created_by = auth()->id                    │  ║
+║                     ║  ├──────────────────────┬──────────┬───────────────┤  ║
+║                     ║  │ Judul (title)        │ Tgl      │ Aksi          │  ║
+║                     ║  │                      │ (date)   │               │  ║
+║                     ║  ├──────────────────────┼──────────┼───────────────┤  ║
+║                     ║  │ Rapat Evaluasi Prog. │ 20/03    │ [✏️ Edit]      │  ║
+║                     ║  │                      │          │ [📤 Kirim]    │  ║
+║                     ║  ├──────────────────────┼──────────┼───────────────┤  ║
+║                     ║  │ Workshop Perencanaan │ 25/03    │ [✏️ Edit]      │  ║
+║                     ║  │                      │          │ [📤 Kirim]    │  ║
+║                     ║  ├──────────────────────┴──────────┴───────────────┤  ║
+║                     ║  │                      [Lihat Semua Draft →]       │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  ❌ Agenda Ditolak — Perlu Diperbaiki           │  ║
+║                     ║  │  agendas WHERE status='REJECTED'                │  ║
+║                     ║  │  AND created_by = auth()->id                    │  ║
+║                     ║  ├──────────────────────┬──────────┬───────────────┤  ║
+║                     ║  │ Judul (title)        │ Tgl      │ Aksi          │  ║
+║                     ║  ├──────────────────────┼──────────┼───────────────┤  ║
+║                     ║  │ Sosialisasi Dana Desa│ 18/03    │ [👁 Lihat]    │  ║
+║                     ║  │                      │          │ [✏️ Perbaiki]  │  ║
+║                     ║  ├──────────────────────┴──────────┴───────────────┤  ║
+║                     ║  │                   [Lihat Semua Ditolak →]        │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  🔔 Notifikasi Terbaru                          │  ║
+║                     ║  │  notifications WHERE user_id = auth()->id       │  ║
+║                     ║  │  ORDER BY created_at DESC LIMIT 3               │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │ 🟢 "Rapat Koordinasi" disetujui Kabid           │  ║
+║                     ║  │    type=approved | 19/03/2025 14.30             │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │ 🔴 "Sosialisasi Dana Desa" ditolak              │  ║
+║                     ║  │    type=rejected | 18/03/2025 10.00             │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │                    [Lihat Semua Notifikasi →]    │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+🖥️ HALAMAN 2 — AGENDA SAYA (index)
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                      🔔 2  |  👤 Ani Widyawati ▼ ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Agenda Saya                                           ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌──── Filter ──────────────────────────────────────┐ ║
+║                     ║  │  Status   : [Semua Status            ▼]          │ ║
+║  📅 Agenda          ║  │             (DRAFT/PENDING/APPROVED/REJECTED/     │ ║
+║    › Buat Agenda    ║  │              COMPLETED/CANCELLED)                │ ║
+║    › Agenda Saya ◄  ║  │  Kategori : [Semua Kategori          ▼]          │ ║
+║                     ║  │             (categories.name)                    │ ║
+║  🔔 Notifikasi      ║  │  Tanggal  : [DD/MM/YYYY]  s/d  [DD/MM/YYYY]    │ ║
+║                     ║  │             (agendas.date)                       │ ║
+║                     ║  │                            [🔍 Cari] [↺ Reset]   │ ║
+║                     ║  └───────────────────────────────────────────────────┘ ║
+║                     ║                                                        ║
+║                     ║  [ + Buat Agenda Baru ]                               ║
+║                     ║                                                        ║
+║                     ║  ┌───────────────────────────────────────────────────┐ ║
+║                     ║  │No│Tgl Agenda│Judul       │Kategori  │Status │Aksi │ ║
+║                     ║  │  │(date)    │(title)     │(cat.name)│       │     │ ║
+║                     ║  ├──┼──────────┼────────────┼──────────┼───────┼─────┤ ║
+║                     ║  │1 │20/03/2025│Rapat       │Rapat     │📝DRAFT│[✏️  │ ║
+║                     ║  │  │09.00-12. │Evaluasi    │          │       │Edit]│ ║
+║                     ║  │  │          │Program     │          │       │[📤  │ ║
+║                     ║  │  │          │            │          │       │Kirim│ ║
+║                     ║  │  │          │            │          │       │]    │ ║
+║                     ║  ├──┼──────────┼────────────┼──────────┼───────┼─────┤ ║
+║                     ║  │2 │22/03/2025│Sosialisasi │Sosialisas│⏳PEND-│[👁  │ ║
+║                     ║  │  │08.00-10. │Dana Desa   │i         │ING    │Det] │ ║
+║                     ║  ├──┼──────────┼────────────┼──────────┼───────┼─────┤ ║
+║                     ║  │3 │15/03/2025│Rapat       │Rapat     │✅APPR-│[👁  │ ║
+║                     ║  │  │13.00-15. │Koordinasi  │          │OVED   │Det] │ ║
+║                     ║  ├──┼──────────┼────────────┼──────────┼───────┼─────┤ ║
+║                     ║  │4 │10/03/2025│Pelatihan   │Pelatihan │❌REJE-│[👁  │ ║
+║                     ║  │  │          │SDM         │          │CTED   │Det] │ ║
+║                     ║  │  │          │            │          │       │[✏️  │ ║
+║                     ║  │  │          │            │          │       │Perb-│ ║
+║                     ║  │  │          │            │          │       │aiki]│ ║
+║                     ║  ├──┴──────────┴────────────┴──────────┴───────┴─────┤ ║
+║                     ║  │  Menampilkan 4 dari 16 agenda                     │ ║
+║                     ║  │  « 1  2 »                          [10 ▼] per hal.│ ║
+║                     ║  └───────────────────────────────────────────────────┘ ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+🖥️ HALAMAN 3 — BUAT AGENDA BARU (create)
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                      🔔 2  |  👤 Ani Widyawati ▼ ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Buat Agenda Baru                    [← Kembali]      ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  INFORMASI AGENDA                               │  ║
+║  📅 Agenda          ║  ├─────────────────────────────────────────────────┤  ║
+║  › Buat Agenda   ◄  ║  │                                                 │  ║
+║    › Agenda Saya    ║  │  Judul Agenda *                                 │  ║
+║                     ║  │  (agendas.title)                                │  ║
+║  🔔 Notifikasi      ║  │  ┌─────────────────────────────────────────┐   │  ║
+║                     ║  │  │ Masukkan judul agenda...                │   │  ║
+║                     ║  │  └─────────────────────────────────────────┘   │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Deskripsi                                      │  ║
+║                     ║  │  (agendas.description - opsional)               │  ║
+║                     ║  │  ┌─────────────────────────────────────────┐   │  ║
+║                     ║  │  │                                         │   │  ║
+║                     ║  │  │ Masukkan deskripsi agenda...            │   │  ║
+║                     ║  │  │                                         │   │  ║
+║                     ║  │  └─────────────────────────────────────────┘   │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Tanggal Kegiatan *    Jam Mulai *   Jam Selesai│  ║
+║                     ║  │  (agendas.date)        (start_time)  (end_time) │  ║
+║                     ║  │  ┌───────────────┐   ┌──────────┐ ┌──────────┐ │  ║
+║                     ║  │  │ DD/MM/YYYY 📅 │   │ HH:MM ⏰ │ │ HH:MM ⏰ │ │  ║
+║                     ║  │  └───────────────┘   └──────────┘ └──────────┘ │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Kategori *                                     │  ║
+║                     ║  │  (agendas.category_id → categories.name)        │  ║
+║                     ║  │  ┌─────────────────────────────────────────┐   │  ║
+║                     ║  │  │ Pilih Kategori...                  ▼    │   │  ║
+║                     ║  │  └─────────────────────────────────────────┘   │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Instansi                                       │  ║
+║                     ║  │  (agendas.instansi_id → instansi.name)          │  ║
+║                     ║  │  ┌─────────────────────────────────────────┐   │  ║
+║                     ║  │  │ Pilih Instansi...                  ▼    │   │  ║
+║                     ║  │  └─────────────────────────────────────────┘   │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Unit/Bidang                                    │  ║
+║                     ║  │  (agendas.unit_id → units.name)                 │  ║
+║                     ║  │  ┌─────────────────────────────────────────┐   │  ║
+║                     ║  │  │ Bidang Perencanaan  [auto dari profile] │   │  ║
+║                     ║  │  └─────────────────────────────────────────┘   │  ║
+║                     ║  │  ⚠️  Terisi otomatis dari unit kerja operator   │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Lokasi *                                       │  ║
+║                     ║  │  (agendas.location_id ATAU agendas.place)       │  ║
+║                     ║  │  ┌─────────────────────────────────────────┐   │  ║
+║                     ║  │  │ (●) Pilih dari Master Lokasi            │   │  ║
+║                     ║  │  │     [Pilih Lokasi...              ▼]    │   │  ║
+║                     ║  │  │      locations.name                     │   │  ║
+║                     ║  │  │                                         │   │  ║
+║                     ║  │  │ ( ) Input Manual                        │   │  ║
+║                     ║  │  │     [Ketik nama tempat...          ]    │   │  ║
+║                     ║  │  │      agendas.place                      │   │  ║
+║                     ║  │  └─────────────────────────────────────────┘   │  ║
+║                     ║  │  ⚠️  Salah satu wajib diisi                     │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  👥 Peserta (agenda_participants) - Opsional    │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │  Tipe Peserta:                                  │  ║
+║                     ║  │  (●) Internal  ( ) Eksternal                    │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  ── Jika Internal: ──────────────────────────  │  ║
+║                     ║  │  [Pilih User...                    ▼] [+Tambah] │  ║
+║                     ║  │   agenda_participants.user_id → users.name      │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  ── Jika Eksternal: ─────────────────────────  │  ║
+║                     ║  │  Nama    : [.........................]          │  ║
+║                     ║  │            agenda_participants.name             │  ║
+║                     ║  │  Instansi: [.........................]          │  ║
+║                     ║  │            agenda_participants.instansi_name    │  ║
+║                     ║  │  Jabatan : [.........................]          │  ║
+║                     ║  │            agenda_participants.role             │  ║
+║                     ║  │                               [+ Tambah Peserta]│  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Daftar Peserta Ditambahkan:                    │  ║
+║                     ║  │  ┌──────────────────────────────────────────┐  │  ║
+║                     ║  │  │ Ani W.  | Dinas Contoh | Internal  [🗑] │  │  ║
+║                     ║  │  │ Tamu E. | Inst. Luar   | Eksternal [🗑] │  │  ║
+║                     ║  │  └──────────────────────────────────────────┘  │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📎 Lampiran (agenda_attachments) - Opsional   │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │  ┌──────────────────────────────────────────┐  │  ║
+║                     ║  │  │ 📂 [Pilih File...]                       │  │  ║
+║                     ║  │  │ Format: pdf, doc, docx, jpg, png         │  │  ║
+║                     ║  │  │ Maks: 5MB per file                       │  │  ║
+║                     ║  │  └──────────────────────────────────────────┘  │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Tandai sebagai lampiran utama:                 │  ║
+║                     ║  │  (agenda_attachments.is_primary)                │  ║
+║                     ║  │  [ ] Jadikan lampiran utama (undangan resmi)    │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  File terupload:                                │  ║
+║                     ║  │  ┌──────────────────────────────────────────┐  │  ║
+║                     ║  │  │ 📄 Undangan_Rapat.pdf  ⭐ primary  [🗑] │  │  ║
+║                     ║  │  └──────────────────────────────────────────┘  │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  ⚙️  Aksi                                        │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  agendas.status akan terisi otomatis:           │  ║
+║                     ║  │  • Simpan Draft  → status = 'DRAFT'             │  ║
+║                     ║  │  • Kirim Kabid   → status = 'PENDING'           │  ║
+║                     ║  │  • created_by    → auth()->user()->id           │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │    [✖ Batal]  [💾 Simpan Draft]  [📤 Kirim ke Kabid] ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+🖥️ HALAMAN 4 — EDIT AGENDA (edit)
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                      🔔 2  |  👤 Ani Widyawati ▼ ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Edit Agenda                          [← Kembali]     ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ⚠️  Catatan: Agenda hanya bisa diedit jika            ║
+║                     ║     status = DRAFT atau REJECTED                       ║
+║  📅 Agenda          ║     (agendas.status ≠ 'APPROVED')                     ║
+║    › Buat Agenda    ║                                                        ║
+║    › Agenda Saya ◄  ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  Status saat ini: 📝 DRAFT                      │  ║
+║  🔔 Notifikasi      ║  │  agendas.status                                 │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  [[ Form sama seperti Buat Agenda,                 ]]  ║
+║                     ║  [[ namun field sudah terisi data existing          ]]  ║
+║                     ║  [[ dari agendas, agenda_participants,              ]]  ║
+║                     ║  [[ agenda_attachments                              ]]  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  ── Jika status = REJECTED, tampilkan: ──────── │  ║
+║                     ║  │  📝 Catatan Penolakan dari Kabid:               │  ║
+║                     ║  │  (agendas.rejected_reason)                      │  ║
+║                     ║  │  ┌──────────────────────────────────────────┐   │  ║
+║                     ║  │  │ "Agenda tidak sesuai jadwal. Mohon       │   │  ║
+║                     ║  │  │  reschedule ke minggu berikutnya."       │   │  ║
+║                     ║  │  └──────────────────────────────────────────┘   │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  ⚙️  Aksi                                        │  ║
+║                     ║  │  [✖ Batal]  [💾 Simpan Draft]  [📤 Kirim ke Kabid] ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+
+
+🖥️ HALAMAN 5 — DETAIL AGENDA OPERATOR (show)
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ☰  SIMAGA                                      🔔 2  |  👤 Ani Widyawati ▼ ║
+╠═════════════════════╦════════════════════════════════════════════════════════╣
+║                     ║  Detail Agenda                        [← Kembali]     ║
+║  📋 NAVIGASI        ║  ───────────────────────────────────────────────────  ║
+║  ─────────────────  ║                                                        ║
+║  🏠 Dashboard       ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  Sosialisasi Dana Desa                          │  ║
+║  📅 Agenda          ║  │  agendas.title                                  │  ║
+║    › Buat Agenda    ║  │                        ┌────────────────────┐   │  ║
+║    › Agenda Saya ◄  ║  │                        │  ❌  REJECTED      │   │  ║
+║                     ║  │                        │  agendas.status    │   │  ║
+║  🔔 Notifikasi      ║  │                        └────────────────────┘   │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │  INFORMASI AGENDA                               │  ║
+║                     ║  ├───────────────────────┬─────────────────────────┤  ║
+║                     ║  │ 📅 Tanggal            │ 18 Maret 2025           │  ║
+║                     ║  │ ⏰ Waktu              │ 08.00 - 10.00           │  ║
+║                     ║  │ 📍 Lokasi             │ Aula B                  │  ║
+║                     ║  │ 🏷️  Kategori           │ Sosialisasi             │  ║
+║                     ║  │ 🏢 Instansi            │ Dinas Contoh            │  ║
+║                     ║  │ 🏬 Unit/Bidang         │ Bidang Perencanaan      │  ║
+║                     ║  ├───────────────────────┴─────────────────────────┤  ║
+║                     ║  │ 📝 Deskripsi                                    │  ║
+║                     ║  │    Sosialisasi program dana desa tahap I...     │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📝 Catatan Penolakan Kabid                     │  ║
+║                     ║  │  agendas.rejected_reason                        │  ║
+║                     ║  ├─────────────────────────────────────────────────┤  ║
+║                     ║  │  "Agenda tidak sesuai jadwal yang telah         │  ║
+║                     ║  │   ditetapkan. Mohon reschedule ke minggu        │  ║
+║                     ║  │   berikutnya."                                  │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │  Ditolak oleh : Dr. Hendra K.                  │  ║
+║                     ║  │  (approved_by → users.name)                    │  ║
+║                     ║  │  Pada         : 18/03/2025 10.00               │  ║
+║                     ║  │  (approved_at)                                  │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  📎 Lampiran (agenda_attachments)               │  ║
+║                     ║  ├──────────────────────────────────┬──────────────┤  ║
+║                     ║  │ Nama File                        │ Aksi         │  ║
+║                     ║  ├──────────────────────────────────┼──────────────┤  ║
+║                     ║  │ 📄 Undangan_Sosialisasi.pdf ⭐   │ [📥 Download]│  ║
+║                     ║  └──────────────────────────────────┴──────────────┘  ║
+║                     ║                                                        ║
+║                     ║  ┌─────────────────────────────────────────────────┐  ║
+║                     ║  │  ⚙️  Aksi                                        │  ║
+║                     ║  │  (tampil hanya jika status = REJECTED/DRAFT)    │  ║
+║                     ║  │                                                 │  ║
+║                     ║  │       [✏️ Perbaiki & Kirim Ulang]                │  ║
+║                     ║  └─────────────────────────────────────────────────┘  ║
+╚═════════════════════╩════════════════════════════════════════════════════════╝
+

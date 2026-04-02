@@ -1,0 +1,549 @@
+Sistem Informasi Manajemen Agenda
+HAK AKSES :
+1) Admin 
+Hak akses: 
+kelola user (operator, kabid, dll) 
+kelola master data (kategori agenda, lokasi, instansi) 
+lihat semua agenda  edit/hapus agenda siapa pun 
+2) Operator 
+Hak akses: input agenda 
+upload undangan/lampiran 
+edit agenda yang dibuat 
+3) Kabid 
+Hak akses: 
+lihat semua agenda bidang 
+approve agenda (opsional tapi keren)
+lihat rekap agenda bulanan
+tandai agenda selesai / dibatalkan 
+4) Staff Bidang 
+Hak akses: 
+lihat agenda yang sudah disetujui
+download undangan 
+lihat agenda berdasarkan kategori (rapat, kunjungan, survei lapangan)
+
+FLOW USER:
+1️⃣ Flow Login & Otorisasi (Global)
+[User]
+→ Halaman Login
+→ Input Email + Password
+→ Sistem Auth
+→ Validasi Kredensial & Role
+→ Redirect ke Dashboard sesuai Role
+Cabang hasil:
+- Jika valid → masuk sistem
+- Jika tidak valid → tampil pesan error
+- Jika akun nonaktif → akses ditolak
+[User]
+→ Klik Logout
+→ Sistem Auth
+→ Session dihapus
+→ Kembali ke Halaman Login
+
+2️⃣ Flow Admin (Pengelolaan Sistem)
+2.1 Kelola User
+[Admin]
+→ Dashboard Admin
+→ Menu User Management
+→ Tambah / Edit / Nonaktifkan / Hapus User
+→ Sistem Simpan ke Database (users)
+Catatan:
+- Admin menentukan Role dan Unit/Bidang
+- User baru mendapat kredensial awal
+
+2.2 Kelola Master Data
+[Admin]
+→ Menu Master Data
+→ Pilih: Kategori / Lokasi / Instansi / Unit
+→ CRUD Data
+→ Sistem Update Database master
+
+2.3 Kelola & Monitoring Agenda
+[Admin]
+→ Menu Semua Agenda
+→ Filter (Tanggal / Status / Kategori)
+→ Lihat Detail Agenda
+→ Edit / Hapus Agenda
+→ Sistem Update Database
+
+
+3️⃣ Flow Operator (Input & Pengelolaan Agenda)
+3.1 Buat Agenda Baru
+[Operator]
+→ Dashboard Operator
+→ Menu Buat Agenda
+→ Isi Form Agenda
+→ Simpan sebagai Draft
+→ Status: DRAFT
+
+3.2 Kirim Agenda untuk Persetujuan
+[Operator]
+→ Buka Agenda Draft
+→ Klik "Kirim ke Kabid"
+→ Status berubah: PENDING
+→ Sistem Kirim Notifikasi ke Kabid
+
+3.3 Edit Agenda
+[Operator]
+→ Buka Agenda Milik Sendiri
+→ Edit Data Agenda
+→ Update Database
+Batasan:
+Hanya bisa edit jika status ≠ APPROVED
+
+3.4 Cetak Agenda
+[Operator]
+→ Menu Cetak Agenda
+→ Pilih Harian / Mingguan
+→ Generate PDF
+→ Download
+
+4️⃣ Flow Kabid Infrastruktur & Kewilayahan (Approval)
+4.1 Lihat Agenda Menunggu Persetujuan
+[Kabid]
+→ Dashboard Kabid
+→ Daftar Agenda PENDING
+
+4.2 Persetujuan Agenda
+[Kabid]
+→ Klik Detail Agenda
+→ Lihat Informasi & Lampiran
+→ Pilih:
+   - Approve
+   - Tolak + Catatan
+Hasil:
+Approve → Status: APPROVED
+Tolak → Status: REJECTED
+Sistem mencatat approver + timestamp
+Notifikasi dikirim ke Operator & Staff
+
+4.3 Update Status Pasca Kegiatan
+[Kabid]
+→ Buka Agenda APPROVED
+→ Tandai Selesai / Dibatalkan
+→ Status: COMPLETED / CANCELLED
+
+5️⃣ Flow Staff Bidang (Konsumsi Informasi)
+5.1 Lihat Agenda
+[Staff]
+→ Dashboard Staff
+→ Lihat Agenda APPROVED
+→ Filter (Kategori / Tanggal)
+
+5.2 Akses Lampiran
+[Staff]
+→ Buka Detail Agenda
+→ Download Undangan / Lampiran
+
+5.3 Upload Dokumentasi (Opsional)
+[Staff]
+→ Buka Agenda COMPLETED
+→ Upload Dokumentasi
+→ Sistem Simpan File & Metadata
+
+5️⃣ Flow Staff Bidang (Konsumsi Informasi)
+5.1 Lihat Agenda
+[Staff]
+→ Dashboard Staff
+→ Lihat Agenda APPROVED
+→ Filter (Kategori / Tanggal)
+
+5.2 Akses Lampiran
+[Staff]
+→ Buka Detail Agenda
+→ Download Undangan / Lampiran
+
+5.3 Upload Dokumentasi (Opsional)
+[Staff]
+→ Buka Agenda COMPLETED
+→ Upload Dokumentasi
+→ Sistem Simpan File & Metadata
+
+FUNCTIONAL REQUIREMENTS
+A. Authentication & Authorization
+FR-A1
+Sistem harus menyediakan fitur login menggunakan email dan password.
+
+FR-A2
+Sistem harus menerapkan Role-Based Access Control (RBAC).
+
+Acceptance Criteria:
+User dengan role Operator tidak dapat mengakses menu User Management.
+
+B. User Management (Admin)
+FR-B1
+Admin dapat membuat, mengedit, menonaktifkan, dan menghapus user.
+
+FR-B2
+Admin dapat menetapkan role dan unit kerja user.
+
+Acceptance Criteria:
+User baru dapat login menggunakan kredensial yang diberikan.
+
+C. Master Data (Admin)
+FR-C1
+Admin dapat mengelola kategori agenda, lokasi, instansi, dan unit kerja.
+
+Acceptance Criteria:
+Data master otomatis muncul pada form input agenda.
+
+D. Manajemen Agenda
+FR-D1
+Operator dapat membuat agenda dengan data wajib:
+- judul
+- tanggal
+- jam
+- kategori
+- lokasi / tempat
+- lampiran
+
+FR-D2
+Sistem harus mendukung status agenda:
+- DRAFT
+- PENDING
+- APPROVED
+- REJECTED
+- COMPLETED
+- CANCELLED
+
+FR-D3
+- Operator hanya dapat mengedit agenda yang dibuatnya selama status ≠ APPROVED.
+
+FR-D4
+- Admin dapat mengedit dan menghapus semua agenda.
+
+E. Approval Agenda (Kabid)
+FR-E1
+- Kabid dapat melihat daftar agenda berstatus PENDING.
+
+FR-E2
+- Kabid dapat menyetujui atau menolak agenda dengan catatan.
+
+FR-E3
+- Sistem mencatat waktu dan user yang melakukan approval.
+
+Acceptance Criteria:
+- Setelah approve, status berubah menjadi APPROVED dan notifikasi dikirim.
+
+F. Lampiran & Dokumentasi
+FR-F1
+Operator dapat mengupload lampiran undangan (PDF/JPG/PNG).
+
+FR-F2
+Staff dapat mengupload dokumentasi pasca kegiatan.
+
+Acceptance Criteria:
+File dapat diunduh oleh user yang berhak.
+
+G. Notifikasi Sistem
+FR-G1
+Sistem menampilkan notifikasi internal untuk:
+- agenda dikirim
+- agenda disetujui
+- agenda ditolak
+
+FR-H2
+User dapat memfilter agenda berdasarkan kategori dan tanggal.
+
+J. Keamanan Sistem
+FR-J1
+Password harus disimpan dalam bentuk hash.
+
+FR-J2
+Sistem membatasi tipe dan ukuran file upload.
+
+FR-J3
+Sistem menolak akses tidak sah (403).
+
+CDM:
+1️⃣ Tabel `roles`
+
+| Atribut     | Tipe Data   | Null | Keterangan                                |
+| ----------- | ----------- | ---- | ----------------------------------------- |
+| id          | bigint (PK) | NO   | Primary key                               |
+| name        | varchar(50) | NO   | Nama role (Admin, Operator, Kabid, Staff) |
+| description | text        | YES  | Deskripsi role                            |
+| created_at  | timestamp   | NO   | Waktu dibuat                              |
+| updated_at  | timestamp   | NO   | Waktu diubah                              |
+
+2️⃣ Tabel `units`
+
+| Atribut    | Tipe Data    | Null | Keterangan       |
+| ---------- | ------------ | ---- | ---------------- |
+| id         | bigint (PK)  | NO   | Primary key      |
+| name       | varchar(150) | NO   | Nama unit/bidang |
+| code       | varchar(20)  | YES  | Kode unit        |
+| created_at | timestamp    | NO   | Waktu dibuat     |
+| updated_at | timestamp    | NO   | Waktu diubah     |
+
+3️⃣ Tabel `users`
+
+| Atribut    | Tipe Data    | Null | Keterangan         |
+| ---------- | ------------ | ---- | ------------------ |
+| id         | bigint (PK)  | NO   | Primary key        |
+| name       | varchar(150) | NO   | Nama user          |
+| email      | varchar(150) | NO   | Email login (unik) |
+| password   | varchar(255) | NO   | Password hash      |
+| role_id    | bigint (FK)  | NO   | Relasi ke roles    |
+| unit_id    | bigint (FK)  | YES  | Relasi ke units    |
+| nip        | varchar(50)  | YES  | NIP pegawai        |
+| phone      | varchar(30)  | YES  | Nomor HP           |
+| is_active  | boolean      | NO   | Status akun        |
+| created_at | timestamp    | NO   | Waktu dibuat       |
+| updated_at | timestamp    | NO   | Waktu diubah       |
+
+4️⃣ Tabel `categories`
+
+| Atribut     | Tipe Data    | Null | Keterangan         |
+| ----------- | ------------ | ---- | ------------------ |
+| id          | bigint (PK)  | NO   | Primary key        |
+| name        | varchar(100) | NO   | Nama kategori      |
+| description | text         | YES  | Deskripsi kategori |
+| created_at  | timestamp    | NO   | Waktu dibuat       |
+| updated_at  | timestamp    | NO   | Waktu diubah       |
+
+5️⃣ Tabel `locations`
+
+| Atribut    | Tipe Data     | Null | Keterangan          |
+| ---------- | ------------- | ---- | ------------------- |
+| id         | bigint (PK)   | NO   | Primary key         |
+| name       | varchar(150)  | NO   | Nama lokasi         |
+| address    | text          | YES  | Alamat              |
+| latitude   | decimal(10,7) | YES  | Koordinat latitude  |
+| longitude  | decimal(10,7) | YES  | Koordinat longitude |
+| created_at | timestamp     | NO   | Waktu dibuat        |
+| updated_at | timestamp     | NO   | Waktu diubah        |
+
+6️⃣ Tabel `instansi`
+
+| Atribut    | Tipe Data    | Null | Keterangan      |
+| ---------- | ------------ | ---- | --------------- |
+| id         | bigint (PK)  | NO   | Primary key     |
+| name       | varchar(200) | NO   | Nama instansi   |
+| contact    | varchar(150) | YES  | Kontak instansi |
+| created_at | timestamp    | NO   | Waktu dibuat    |
+| updated_at | timestamp    | NO   | Waktu diubah    |
+
+7️⃣ Tabel `agendas` (INTI SISTEM)
+
+| Atribut         | Tipe Data    | Null | Keterangan                                                    |
+| --------------- | ------------ | ---- | ------------------------------------------------------------- |
+| id              | bigint (PK)  | NO   | Primary key                                                   |
+| title           | varchar(255) | NO   | Judul agenda                                                  |
+| description     | text         | YES  | Deskripsi                                                     |
+| date            | date         | NO   | Tanggal kegiatan                                              |
+| start_time      | time         | NO   | Jam mulai                                                     |
+| end_time        | time         | YES  | Jam selesai                                                   |
+| location_id     | bigint (FK)  | YES  | Lokasi master                                                 |
+| place           | varchar(255) | YES  | Tempat manual                                                 |
+| category_id     | bigint (FK)  | NO   | Kategori agenda                                               |
+| instansi_id     | bigint (FK)  | YES  | Instansi terkait                                              |
+| unit_id         | bigint (FK)  | NO   | Bidang/unit                                                   |
+| status          | enum         | NO   | DRAFT / PENDING / APPROVED / REJECTED / COMPLETED / CANCELLED |
+| created_by      | bigint (FK)  | NO   | Operator pembuat                                              |
+| approved_by     | bigint (FK)  | YES  | Kabid penyetuju                                               |
+| approved_at     | datetime     | YES  | Waktu approve                                                 |
+| rejected_reason | text         | YES  | Alasan penolakan                                              |
+| created_at      | timestamp    | NO   | Waktu dibuat                                                  |
+| updated_at      | timestamp    | NO   | Waktu diubah                                                  |
+
+Catatan penting (jelas untuk dosen):
+* `location_id` **ATAU** `place` wajib diisi (validasi aplikasi)
+* `approved_by` & `approved_at` hanya terisi jika status = APPROVED
+
+8️⃣ Tabel `agenda_participants`
+
+| Atribut       | Tipe Data    | Null | Keterangan        |
+| ------------- | ------------ | ---- | ----------------- |
+| id            | bigint (PK)  | NO   | Primary key       |
+| agenda_id     | bigint (FK)  | NO   | Relasi agenda     |
+| user_id       | bigint (FK)  | YES  | Peserta internal  |
+| name          | varchar(200) | YES  | Peserta eksternal |
+| instansi_name | varchar(200) | YES  | Instansi peserta  |
+| role          | varchar(100) | YES  | Jabatan           |
+| invited       | boolean      | NO   | Status undangan   |
+| created_at    | timestamp    | NO   | Waktu dibuat      |
+| updated_at    | timestamp    | NO   | Waktu diubah      |
+
+Rule bisnis penting:
+
+* Jika `user_id` ≠ NULL → `name` = NULL
+* Jika `user_id` = NULL → `name` WAJIB diisi
+
+9️⃣ Tabel `agenda_attachments`
+
+| Atribut     | Tipe Data    | Null | Keterangan     |
+| ----------- | ------------ | ---- | -------------- |
+| id          | bigint (PK)  | NO   | Primary key    |
+| agenda_id   | bigint (FK)  | NO   | Relasi agenda  |
+| filename    | varchar(255) | NO   | Nama file      |
+| filepath    | varchar(500) | NO   | Lokasi file    |
+| mime_type   | varchar(100) | NO   | Tipe file      |
+| file_size   | int          | NO   | Ukuran file    |
+| uploaded_by | bigint (FK)  | NO   | Pengunggah     |
+| uploaded_at | datetime     | NO   | Waktu upload   |
+| is_primary  | boolean      | NO   | Lampiran utama |
+
+🔟 Tabel `agenda_documentations`
+
+| Atribut     | Tipe Data    | Null | Keterangan           |
+| ----------- | ------------ | ---- | -------------------- |
+| id          | bigint (PK)  | NO   | Primary key          |
+| agenda_id   | bigint (FK)  | NO   | Relasi agenda        |
+| caption     | varchar(255) | YES  | Keterangan           |
+| filename    | varchar(255) | NO   | Nama file            |
+| filepath    | varchar(500) | NO   | Lokasi file          |
+| file_type   | varchar(50)  | NO   | Foto / PDF / Notulen |
+| uploaded_by | bigint (FK)  | NO   | Pengunggah           |
+| uploaded_at | datetime     | NO   | Waktu upload         |
+
+tabel Notifikasi
+| Atribut    | Tipe Data    | Null | Keterangan                           |
+| ---------- | ------------ | ---- | ------------------------------------ |
+| id         | bigint (PK)  | NO   | Primary key                          |
+| user_id    | bigint (FK)  | NO   | Penerima notifikasi                  |
+| agenda_id  | bigint (FK)  | YES  | Agenda terkait                       |
+| title      | varchar(255) | NO   | Judul notifikasi                     |
+| message    | text         | NO   | Isi notifikasi                       |
+| type       | varchar(50)  | NO   | agenda_pending / approved / rejected |
+| is_read    | boolean      | NO   | Status dibaca                        |
+| created_at | timestamp    | NO   | Waktu dibuat                         |
+
+📘 PENJELASAN CDM
+1️⃣ Tabel roles
+✅ Kegunaan
+Menyimpan jenis hak akses (role) pengguna dalam sistem.
+Role menentukan fitur apa saja yang bisa diakses oleh user.
+Role yang digunakan:
+- Admin
+- Operator
+- Kabid
+- Staff
+Contoh Data:
+| id | name     | description               |
+| -- | -------- | ------------------------- |
+| 1  | Admin    | Pengelola sistem          |
+| 2  | Operator | Input dan kelola agenda   |
+| 3  | Kabid    | Persetujuan agenda bidang |
+| 4  | Staff    | Melihat agenda disetujui  |
+
+2️⃣ Tabel units
+✅ Kegunaan
+Menyimpan data unit/bidang kerja.
+Digunakan untuk:
+- menandai asal user
+- menandai agenda milik bidang tertentu
+Contoh Data:
+| id | name                          | code      |
+| -- | ----------------------------- | --------- |
+| 1  | Infrastruktur dan Kewilayahan | INFRAKWIL |
+
+3️⃣ Tabel users
+✅ Kegunaan
+Menyimpan data akun pengguna yang dapat login ke sistem.
+Informasi yang disimpan:
+- identitas user
+- role
+- unit kerja
+- status aktif akun
+Contoh Data:
+| id | name          | email                                                         | role_id | unit_id | nip     | is_active |
+| -- | ------------- | ------------------------------------------------------------- | ------- | ------- | ------- | --------- |
+| 1  | Admin Bappeda | [admin@bappeda.go.id](mailto:admin@bappeda.go.id)             | 1       | 1       | 1987xxx | 1         |
+| 2  | Operator TU   | [operator@bappeda.go.id](mailto:operator@bappeda.go.id)       | 2       | 1       | 1998xxx | 1         |
+| 3  | Kabid Infra   | [kabid.infra@bappeda.go.id](mailto:kabid.infra@bappeda.go.id) | 3       | 1       | 1979xxx | 1         |
+| 4  | Staff Bidang  | [staff1@bappeda.go.id](mailto:staff1@bappeda.go.id)           | 4       | 1       | 2001xxx | 1         |
+
+4️⃣ Tabel categories
+✅ Kegunaan
+Menyimpan kategori agenda agar agenda dapat dikelompokkan dan difilter.
+Contoh Data:
+| id | name            | description                |
+| -- | --------------- | -------------------------- |
+| 1  | Rapat           | Rapat koordinasi           |
+| 2  | Survei Lapangan | Kegiatan survei lokasi     |
+| 3  | Kunjungan       | Kunjungan kerja            |
+| 4  | Monitoring      | Monitoring kegiatan proyek |
+
+5️⃣ Tabel locations
+✅ Kegunaan
+Menyimpan data lokasi kegiatan yang sering digunakan agar input agenda lebih cepat dan konsisten.
+Contoh Data:
+| id | name                | address             |
+| -- | ------------------- | ------------------- |
+| 1  | Ruang Rapat Bappeda | Kantor Bappeda Lt.2 |
+| 2  | Aula Pemda          | Kantor Bupati       |
+| 3  | Lokasi Proyek Jalan | Desa Suka Maju      |
+
+6️⃣ Tabel instansi
+✅ Kegunaan
+Menyimpan data instansi mitra atau penyelenggara kegiatan.
+Contoh Data:
+| id | name              | contact                                         |
+| -- | ----------------- | ----------------------------------------------- |
+| 1  | Dinas PUPR        | [pupr@pemda.go.id](mailto:pupr@pemda.go.id)     |
+| 2  | Dinas Perhubungan | [dishub@pemda.go.id](mailto:dishub@pemda.go.id) |
+| 3  | Kecamatan Tondano | 0812xxxx                                        |
+
+7️⃣ Tabel agendas ⭐ (TABEL INTI)
+✅ Kegunaan
+Menyimpan seluruh data agenda kegiatan.
+Tabel ini menjadi pusat relasi sistem.
+Status agenda:
+- DRAFT
+- PENDING
+- APPROVED
+- REJECTED
+- COMPLETED
+- CANCELLED
+Contoh Data:
+| id | title                          | date       | category_id | unit_id | status   | created_by | approved_by |
+| -- | ------------------------------ | ---------- | ----------- | ------- | -------- | ---------- | ----------- |
+| 1  | Rapat Koordinasi Jalan 2026    | 2026-02-10 | 1           | 1       | PENDING  | 2          | NULL        |
+| 2  | Survei Drainase Desa Suka Maju | 2026-02-12 | 2           | 1       | APPROVED | 2          | 3           |
+📌 Catatan:
+- approved_by hanya terisi jika status = APPROVED
+- Lokasi bisa dari location_id atau place
+
+8️⃣ Tabel agenda_participants
+✅ Kegunaan
+Menyimpan daftar peserta agenda, baik internal maupun eksternal.
+Contoh Data:
+| id | agenda_id | user_id | name             | instansi_name     | role  |
+| -- | --------- | ------- | ---------------- | ----------------- | ----- |
+| 1  | 2         | 4       | NULL             | NULL              | Staff |
+| 2  | 2         | NULL    | Camat Tondano    | Kecamatan Tondano | Camat |
+| 3  | 2         | NULL    | Kepala Desa Suka | Desa Suka Maju    | Kades |
+
+9️⃣ Tabel agenda_attachments
+✅ Kegunaan
+Menyimpan lampiran undangan atau file pendukung agenda.
+Contoh Data:
+| id | agenda_id | filename            | mime_type       | uploaded_by | is_primary |
+| -- | --------- | ------------------- | --------------- | ----------- | ---------- |
+| 1  | 2         | undangan_survei.pdf | application/pdf | 2           | 1          |
+| 2  | 2         | peta_lokasi.jpg     | image/jpeg      | 2           | 0          |
+
+🔟 Tabel agenda_documentations
+✅ Kegunaan
+Menyimpan dokumentasi pasca kegiatan, seperti:
+- foto
+- notulen
+- laporan hasil kegiatan
+Contoh Data:
+| id | agenda_id | caption       | filename    | file_type |
+| -- | --------- | ------------- | ----------- | --------- |
+| 1  | 2         | Foto survei   | foto1.jpg   | photo     |
+| 2  | 2         | Notulen rapat | notulen.pdf | pdf       |
+
+1️⃣1️⃣ Tabel notifications
+✅ Kegunaan
+- Menyimpan notifikasi internal sistem yang diterima oleh user.
+- Digunakan untuk:
+- agenda dikirim ke Kabid
+- agenda disetujui
+- agenda ditolak
+Contoh Data:
+| id | user_id | agenda_id | title                | type            | is_read |
+| -- | ------- | --------- | -------------------- | --------------- | ------- |
+| 1  | 3       | 1         | Agenda Baru Menunggu | agenda_pending  | 0       |
+| 2  | 2       | 2         | Agenda Disetujui     | agenda_approved | 0       |
