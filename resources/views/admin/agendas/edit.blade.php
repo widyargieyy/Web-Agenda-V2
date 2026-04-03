@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Buat Agenda')
+@section('title', 'Edit Agenda')
 
 @section('page-title')
     <div class="page-title-head d-flex align-items-center">
         <div class="flex-grow-1">
-            <h4 class="page-main-title m-0">Buat Agenda</h4>
+            <h4 class="page-main-title m-0">Edit Agenda</h4>
         </div>
         <div class="text-end">
             <ol class="breadcrumb m-0 py-0">
@@ -32,9 +32,10 @@
                 </div>
             @endif
 
-            <form action="{{ route('operator.buat-agenda.store') }}" method="POST" enctype="multipart/form-data"
+            <form action="{{ route('admin.data-agenda.update', $data->id) }}" method="POST" enctype="multipart/form-data"
                 id="agenda-form">
                 @csrf
+                @method('PUT')
 
                 {{-- ===== SECTION 1: INFO AGENDA ===== --}}
                 <div class="card border-0 mb-3">
@@ -56,7 +57,8 @@
                                 Judul Agenda <span class="text-danger">*</span>
                             </label>
                             <input type="text" name="title" class="form-control @error('title') is-invalid @enderror"
-                                placeholder="Contoh: Rapat Koordinasi Bulanan" value="{{ old('title') }}" required />
+                                placeholder="Contoh: Rapat Koordinasi Bulanan" value="{{ old('title', $data->title) }}"
+                                required />
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -69,7 +71,7 @@
                                 <span class="text-muted fw-normal">(Opsional)</span>
                             </label>
                             <textarea name="description" class="form-control @error('description') is-invalid @enderror" rows="4"
-                                placeholder="Tuliskan deskripsi singkat agenda ini..." style="resize: none;">{{ old('description') }}</textarea>
+                                placeholder="Tuliskan deskripsi singkat agenda ini..." style="resize: none;">{{ old('description', $data->description) }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -83,7 +85,7 @@
                                     <option value="" selected disabled>Pilih Kategori</option>
                                     @foreach ($dataKategori as $cat)
                                         <option value="{{ $cat->id }}"
-                                            {{ old('category_id') == $cat->id ? 'selected' : '' }}>
+                                            {{ old('category_id', $data->category_id) == $cat->id ? 'selected' : '' }}>
                                             {{ $cat->name }}
                                         </option>
                                     @endforeach
@@ -98,8 +100,41 @@
                                 </label>
                                 <input type="text" name="place"
                                     class="form-control @error('place') is-invalid @enderror"
-                                    placeholder="Contoh: Aula Gedung A" value="{{ old('place') }}" required />
+                                    placeholder="Contoh: Aula Gedung A" value="{{ old('place', $data->place) }}"
+                                    required />
                                 @error('place')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-medium fs-sm">Status<span class="text-danger">*</span></label>
+                                <select name="status" class="form-select @error('status') is-invalid @enderror">
+                                    <option value="" selected disabled>Pilih Status</option>
+                                    <option value="PENDING"
+                                        {{ old('status', $data->status) == 'PENDING' ? 'selected' : '' }}>
+                                        PENDING
+                                    </option>
+                                    <option value="APPROVED"
+                                        {{ old('status', $data->status) == 'APPROVED' ? 'selected' : '' }}>
+                                        APPROVED
+                                    </option>
+                                    <option value="DRAFT" {{ old('status', $data->status) == 'DRAFT' ? 'selected' : '' }}>
+                                        DRAFT
+                                    </option>
+                                    <option value="COMPLETED"
+                                        {{ old('status', $data->status) == 'COMPLETED' ? 'selected' : '' }}>
+                                        COMPLETED
+                                    </option>
+                                    <option value="CANCELLED"
+                                        {{ old('status', $data->status) == 'CANCELLED' ? 'selected' : '' }}>
+                                        CANCELLED
+                                    </option>
+                                    <option value="REJECTED"
+                                        {{ old('status', $data->status) == 'REJECTED' ? 'selected' : '' }}>
+                                        REJECTED
+                                    </option>
+                                </select>
+                                @error('status')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -129,8 +164,8 @@
                                     Tanggal Kegiatan <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" name="date" data-provider="flatpickr" data-date-format="Y-m-d"
-                                    data-min-date="today" class="form-control @error('date') is-invalid @enderror"
-                                    placeholder="Pilih tanggal..." value="{{ old('date') }}" required />
+                                    class="form-control @error('date') is-invalid @enderror" placeholder="Pilih tanggal..."
+                                    value="{{ old('date', $data->date) }}" required />
                                 @error('date')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -143,7 +178,7 @@
                                 </label>
                                 <input type="time" name="start_time"
                                     class="form-control @error('start_time') is-invalid @enderror"
-                                    value="{{ old('start_time') }}" required />
+                                    value="{{ old('start_time', $data->start_time) }}" required />
                                 @error('start_time')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -156,7 +191,7 @@
                                 </label>
                                 <input type="time" name="end_time"
                                     class="form-control @error('end_time') is-invalid @enderror"
-                                    value="{{ old('end_time') }}" required />
+                                    value="{{ old('end_time', $data->end_time) }}" required />
                                 @error('end_time')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -189,18 +224,15 @@
 
                 {{-- ===== ACTION BUTTONS ===== --}}
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <a href="{{ route('operator.agenda-saya.index') }}" class="btn btn-light">
+                    <a href="{{ route('admin.data-agenda.index') }}" class="btn btn-light">
                         <i class="ti ti-arrow-left me-1"></i>Kembali
                     </a>
                     <div class="d-flex gap-2">
                         <button type="reset" class="btn btn-light" id="reset-btn">
                             <i class="ti ti-refresh me-1"></i>Reset
                         </button>
-                        <button type="submit" name="action" value="draft" class="btn btn-success" id="btn-draft">
-                            <i class="ti ti-device-floppy me-1"></i>Simpan Sebagai Draft
-                        </button>
-                        <button type="submit" name="action" value="submit" class="btn btn-primary" id="btn-submit">
-                            <i class="ti ti-send me-1"></i>Kirim Ke Kabid
+                        <button type="submit" class="btn btn-success" id="btn-draft">
+                            <i class="ti ti-device-floppy me-1"></i>Simpan Perubahan
                         </button>
                     </div>
                 </div>

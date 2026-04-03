@@ -166,8 +166,6 @@
                                         </a>
                                     </li>
                                 </ul>
-
-
                                 <div class="tab-content">
 
                                     {{-- ========== TAB: DOKUMENTASI TERUPLOAD ========== --}}
@@ -428,7 +426,8 @@
                                                     <a href="{{ asset('storage/' . $dt->filepath) }}" class="link-reset"
                                                         target="_blank">{{ $dt->filename ?? '-' }}</a>
                                                 </h6>
-                                                <p class="text-muted mb-0 fs-xxs">{{ $dt->file_size ?? '-' }} MB</p>
+                                                <p class="text-muted mb-0 fs-xxs">
+                                                    {{ number_format($dt->file_size / 1048576, 1) }} MB</p>
                                             </div>
                                         </div>
                                         <a href="{{ asset('storage/' . $dt->filepath) }}"

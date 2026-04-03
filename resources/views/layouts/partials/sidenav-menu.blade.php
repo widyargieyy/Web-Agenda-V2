@@ -17,26 +17,11 @@
 
         {{-- Projects --}}
         <li class="side-nav-item">
-            <a data-bs-toggle="collapse" href="#projects" aria-expanded="false" aria-controls="projects"
-                class="side-nav-link">
+            <a href="{{ route('staff.data-agenda') }}" class="side-nav-link">
                 <span class="menu-icon"><i class="ti ti-calendar-event"></i></span>
-                <span class="menu-text" data-lang="projects">Agenda</span>
-                <span class="menu-arrow"></span>
+                <span class="menu-text" data-lang="projects">Lihat Agenda</span>
+
             </a>
-            <div class="collapse" id="projects">
-                <ul class="sub-menu">
-                    <li class="side-nav-item">
-                        <a href="{{ route('staff.data-agenda') }}" class="side-nav-link">
-                            <span class="menu-text" data-lang="apps-projects-grid">Lihat Agenda</span>
-                        </a>
-                    </li>
-                    {{-- <li class="side-nav-item">
-                    <a href="" class="side-nav-link">
-                        <span class="menu-text" data-lang="apps-projects-grid">Upload Dokumen</span>
-                    </a>
-                </li> --}}
-                </ul>
-            </div>
         </li>
     </ul>
 @elseif (Auth::user()->role_id == 2)
@@ -116,12 +101,11 @@
         </li>
 
         <li class="side-nav-item">
-            <a href="#" class="side-nav-link ">
+            <a href="{{ route('admin.data-agenda.index') }}" class="side-nav-link ">
                 <span class="menu-icon"><i class="ti ti-calendar-event"></i></span>
-                <span class="menu-text" data-lang="apps-chat">Data Agenda</span>
+                <span class="menu-text" data-lang="apps-chat">Data Semua Agenda</span>
             </a>
         </li>
-
     </ul>
 @elseif (Auth::user()->role_id == 3)
     {{-- Kabid --}}

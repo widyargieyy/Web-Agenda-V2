@@ -1,13 +1,27 @@
 <div class="sidenav-menu">
     <!-- Brand Logo -->
-    <a href="index.html" class="logo">
+    @php
+        $dashboardRoute = '#'; // fallback jika tidak cocok
+        if (auth()->user()->role_id == 1) {
+            $dashboardRoute = route('admin.dashboard');
+        } elseif (auth()->user()->role_id == 2) {
+            $dashboardRoute = route('operator.dashboard');
+        } elseif (auth()->user()->role_id == 4) {
+            $dashboardRoute = route('staff.dashboard');
+        } elseif (auth()->user()->role_id == 3) {
+            $dashboardRoute = route('kabid.dashboard');
+        }
+    @endphp
+    <a href="{{ $dashboardRoute }}" class="logo">
         <span class="logo logo-light">
-            <span class="logo-lg"><img src="{{ asset('assets') }}/images/logo.png" alt="logo" /></span>
-            <span class="logo-sm"><img src="{{ asset('assets') }}/images/logo-sm.png" alt="small logo" /></span>
+            <span class="logo-lg"><img src="{{ asset('assets') }}/images/bapedda_putih.png" alt="logo"
+                    style="width: 100%; height:5%" /></span>
+            <span class="logo-sm"><img src="{{ asset('assets') }}/images/logo_bappeda.png" alt="small logo" /></span>
         </span>
         <span class="logo logo-dark">
-            <span class="logo-lg"><img src="{{ asset('assets') }}/images/logo-black.png" alt="dark logo" /></span>
-            <span class="logo-sm"><img src="{{ asset('assets') }}/images/logo-sm.png" alt="small logo" /></span>
+            <span class="logo-lg"><img src="{{ asset('assets') }}/images/bapedda_nigas.png"
+                    style="width: 100%; height:5%" alt="dark logo" /></span>
+            <span class="logo-sm"><img src="{{ asset('assets') }}/images/logo_bappeda.png" alt="small logo" /></span>
         </span>
     </a>
 
@@ -37,7 +51,8 @@
                 </div>
                 <div>
                     <a class="dropdown-toggle drop-arrow-none link-reset sidenav-user-set-icon"
-                        data-bs-toggle="dropdown" data-bs-offset="0,12" href="#!" aria-haspopup="false" aria-expanded="false">
+                        data-bs-toggle="dropdown" data-bs-offset="0,12" href="#!" aria-haspopup="false"
+                        aria-expanded="false">
                         <i class="ti ti-settings fs-24 align-middle ms-1"></i>
                     </a>
                     <div class="dropdown-menu">

@@ -26,11 +26,11 @@ Route::prefix('admin')->name('admin.')->group(function(){
     Route::put('/data-kategori/{category}/update', [CategoryController::class, 'update'])->name('data-kategori.update');
     Route::delete('/data-kategori/{category}/delete', [CategoryController::class, 'destroy'])->name('data-kategori.destroy');
     
-    // Route::get('/data-agenda', [AgendaController::class, 'index'])->name('data-agenda.index');
-    // Route::get('/data-agenda/{data}/show', [AgendaController::class, 'show'])->name('data-agenda.show');
-    // Route::get('/data-agenda/{data}/edit', [AgendaController::class, 'edit'])->name('data-agenda.edit');
-    // Route::put('/data-agenda/{data}/update', [AgendaController::class, 'update'])->name('data-agenda.update');
-    // Route::delete('/data-agenda/{data}/delete', [AgendaController::class, 'destroy'])->name('data-agenda.destroy');
+    Route::get('/data-agenda', [AgendaController::class, 'index'])->name('data-agenda.index');
+    Route::get('/data-agenda/{data}/show', [AgendaController::class, 'show'])->name('data-agenda.show');
+    Route::get('/data-agenda/{data}/edit', [AgendaController::class, 'edit'])->name('data-agenda.edit');
+    Route::put('/data-agenda/{data}/update', [AgendaController::class, 'update'])->name('data-agenda.update');
+    Route::delete('/data-agenda/{data}/delete', [AgendaController::class, 'destroy'])->name('data-agenda.destroy');
     
 
 });

@@ -17,37 +17,25 @@
 @endsection
 
 @section('content')
-    {{-- Alert --}}
-    {{-- <div class="alert alert-success alert-dismissible d-flex align-items-center" role="alert">
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        <i class="ti ti-lifebuoy fs-24 me-1"></i>
-        <div>
-            <strong> Dear David Dev - </strong>
-            We kindly encourage you to review your recent transactions and financial commitments to ensure that your account
-            is in good standing.
-        </div>
-        <a href="#!" class="text-reset text-decoration-underline ms-auto link-offset-2"><b>Action Now</b></a>
-    </div> --}}
+
+    <!-- Data Agenda Table Section -->
 
     <div class="row">
         <div class="col-12">
             <div data-table data-table-rows-per-page="8" class="card">
-                <div class="card-header border-light justify-content-between">
-                    <div class="d-flex gap-2">
+                <div class="card-header border-light d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <div class="d-flex gap-2 align-items-center">
                         <!-- Search -->
                         <div class="app-search">
-                            <input data-table-search type="search" class="form-control" placeholder="Search task..." />
+                            <input data-table-search type="search" class="form-control" placeholder="Cari agenda..." />
                             <i class="ti ti-search app-search-icon text-muted"></i>
                         </div>
-
                         <!-- Delete Selected -->
-                        <button data-table-delete-selected class="btn btn-danger d-none">Delete</button>
+                        <button data-table-delete-selected class="btn btn-danger d-none">Hapus</button>
                     </div>
-
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span class="me-2 fw-semibold">Filter By:</span>
-
-                        <!-- Task kategori Filter -->
+                        <span class="me-2 fw-semibold">Filter:</span>
+                        <!-- Kategori Filter -->
                         <div class="app-search">
                             <select data-table-filter="kategori" class="form-select form-control my-1 my-md-0">
                                 <option value="All">Kategori</option>
@@ -58,7 +46,7 @@
                             <i class="ti ti-list-check app-search-icon text-muted"></i>
                         </div>
 
-                        <!-- Task kategori Filter -->
+                        <!-- Status Filter -->
                         <div class="app-search">
                             <select data-table-filter="status" class="form-select form-control my-1 my-md-0">
                                 <option value="All">Status</option>
@@ -67,7 +55,6 @@
                             </select>
                             <i class="ti ti-list-check app-search-icon text-muted"></i>
                         </div>
-
                         <!-- Records Per Page -->
                         <div>
                             <select data-table-set-rows-per-page class="form-select form-control my-1 my-md-0">
@@ -78,11 +65,6 @@
                             </select>
                         </div>
                     </div>
-
-                    {{-- <div class="d-flex gap-1">
-                        <a href="apps-task-create.html" class="btn btn-primary ms-1"> <i class="ti ti-plus fs-sm me-2"></i>
-                            Add Task </a>
-                    </div> --}}
                 </div>
 
                 <div class="table-responsive">
@@ -93,11 +75,10 @@
                                 <th data-table-sort>Tanggal Agenda</th>
                                 <th data-table-sort data-column="kategori">Kategori</th>
                                 <th data-table-sort data-column="status">Status</th>
-                                <th class="text-center" style="width: 1%">Actions</th>
+                                <th class="text-center" style="width: 1%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Task 12 -->
                             @foreach ($agendas as $data)
                                 <tr>
                                     <td>
@@ -109,13 +90,11 @@
                                         <p class="text-muted fs-xs mb-0">Dibuat:
                                             {{ \Carbon\Carbon::parse($data->created_at)->format('j M, Y') }} <small
                                                 class="text-muted">
-                                                {{ \Carbon\Carbon::parse($data->created_at)->format('H:i') }}
-                                                WIB</small></p>
+                                                {{ \Carbon\Carbon::parse($data->created_at)->format('H:i') }} WIB
+                                            </small>
+                                        </p>
                                     </td>
-
-                                    <td><i class="ti ti-calendar text-muted me-1"></i>
-                                        {{ $data->date ?? '-' }}</td>
-
+                                    <td><i class="ti ti-calendar text-muted me-1"></i> {{ $data->date ?? '-' }}</td>
                                     <td>{{ $data->category->name ?? '-' }}</td>
                                     <td>
                                         @if ($data->status == 'COMPLETED')
@@ -130,10 +109,6 @@
                                                 class="btn btn-default btn-icon btn-sm">
                                                 <i class="ti ti-eye fs-lg"></i>
                                             </a>
-                                            {{-- <a href="#" class="btn btn-default btn-icon btn-sm"><i
-                                                class="ti ti-edit fs-lg"></i></a>
-                                        <a href="#" data-table-delete-row class="btn btn-default btn-icon btn-sm"><i
-                                                class="ti ti-trash fs-lg"></i></a> --}}
                                         </div>
                                     </td>
                                 </tr>
@@ -150,12 +125,10 @@
                 </div>
             </div>
         </div>
-        <!-- end col -->
     </div>
-    <!-- end row -->
 
 @endsection
 
 @push('scripts')
-    <script src="assets/js/pages/dashboard-finance.js"></script>
+    <script src="{{ asset('assets/js/pages/dashboard-finance.js') }}"></script>
 @endpush

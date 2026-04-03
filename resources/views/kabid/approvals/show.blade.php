@@ -18,416 +18,416 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-xxl-12">
-            <div class="row g-0">
 
-                {{-- ===================== MAIN CONTENT ===================== --}}
-                <div class="col-xl-9">
-                    <div class="card card-h-100 rounded-0 rounded-start border-end border-dashed">
+    {{-- ===================== HERO HEADER ===================== --}}
+    <div class="agenda-hero mb-4">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <a href="{{ route('kabid.approval.index') }}" class="btn btn-sm btn-light">
+                <i class="ti ti-arrow-left me-1"></i>Kembali
+            </a>
+            @if ($data->status == 'COMPLETED')
+                <span class="badge bg-success-subtle text-success fs-xs px-2 py-1">
+                    <i class="ti ti-circle-check me-1"></i>Selesai
+                </span>
+            @elseif ($data->status == 'APPROVED')
+                <span class="badge bg-primary-subtle text-primary fs-xs px-2 py-1">
+                    <i class="ti ti-circle-check me-1"></i>Disetujui
+                </span>
+            @elseif ($data->status == 'PENDING')
+                <span class="badge bg-warning-subtle text-warning fs-xs px-2 py-1">
+                    <i class="ti ti-clock me-1"></i>Menunggu Persetujuan
+                </span>
+            @elseif ($data->status == 'REJECTED')
+                <span class="badge bg-danger-subtle text-danger fs-xs px-2 py-1">
+                    <i class="ti ti-x me-1"></i>Ditolak
+                </span>
+            @else
+                <span class="badge bg-secondary-subtle text-secondary fs-xs px-2 py-1">
+                    {{ $data->status ?? 'Draft' }}
+                </span>
+            @endif
+        </div>
 
-                        {{-- ---- CARD HEADER ---- --}}
-                        <div class="card-header align-items-start p-4 pb-3">
-                            <div class="w-100 mb-3">
-                                <a href="{{ route('kabid.approval.index') }}" class="btn btn-sm btn-light">
-                                    <i class="ti ti-arrow-left me-1"></i>Kembali ke Data Agenda
-                                </a>
+        <h2 class="fw-semibold mb-2">{{ $data->title ?? '-' }}</h2>
+
+        <div class="d-flex flex-wrap gap-3">
+            <span class="text-muted fs-sm d-flex align-items-center gap-1">
+                <i class="ti ti-calendar text-primary"></i>
+                {{ \Carbon\Carbon::parse($data->date)->locale('id')->isoFormat('dddd, D MMMM Y') }}
+            </span>
+            <span class="text-muted fs-sm d-flex align-items-center gap-1">
+                <i class="ti ti-clock text-primary"></i>
+                {{ $data->start_time }} &ndash; {{ $data->end_time }} WIB
+            </span>
+            @if ($data->place)
+                <span class="text-muted fs-sm d-flex align-items-center gap-1">
+                    <i class="ti ti-map-pin text-danger"></i>
+                    {{ $data->place }}
+                </span>
+            @endif
+        </div>
+    </div>
+
+    {{-- ===================== BANNER AKSI PERSETUJUAN (hanya PENDING) ===================== --}}
+    @if ($data->status == 'PENDING')
+        <div class="card border-warning mb-4" style="border-width: 1.5px !important;">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap">
+                    <div class="d-flex align-items-center gap-3">
+                        <div
+                            class="avatar-md bg-warning-subtle rounded-circle d-flex align-items-center justify-content-center flex-shrink-0">
+                            <i class="ti ti-clock text-warning fs-xl"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-semibold mb-1">Agenda Ini Menunggu Persetujuan Anda</h6>
+                            <p class="text-muted fs-sm mb-0">Tinjau detail agenda di bawah, lalu berikan keputusan Anda.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2 flex-shrink-0">
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                            data-bs-target="#modal-tolak">
+                            <i class="ti ti-x me-1"></i>Tolak
+                        </button>
+                        <form action="{{ route('kabid.approval.approve', $data->id) }}" method="POST" id="form-approve">
+                            @csrf
+                            @method('PATCH')
+                            <button type="button" class="btn btn-sm btn-success" onclick="confirmApprove()">
+                                <i class="ti ti-check me-1"></i>Setujui
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- ===================== MAIN LAYOUT ===================== --}}
+    <div class="row g-4">
+
+        {{-- ===================== KOLOM KIRI ===================== --}}
+        <div class="col-xl-8">
+
+            {{-- ---- DESKRIPSI ---- --}}
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fs-sm fw-semibold text-muted text-uppercase mb-3">
+                        <i class="ti ti-align-left me-1"></i>Deskripsi Agenda
+                    </h5>
+                    <p class="text-body mb-0" style="line-height: 1.8;">
+                        {{ $data->description ?? 'Tidak ada deskripsi.' }}
+                    </p>
+                </div>
+            </div>
+
+            {{-- ---- DOKUMENTASI ---- --}}
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between p-4 pb-3">
+                    <h5 class="fs-sm fw-semibold text-muted text-uppercase mb-0">
+                        <i class="ti ti-photo me-1"></i>Dokumentasi
+                        @if ($data->documentations->count() > 0)
+                            <span
+                                class="badge bg-primary-subtle text-primary ms-1">{{ $data->documentations->count() }}</span>
+                        @endif
+                    </h5>
+
+                    @if ($data->status == 'COMPLETED')
+                        <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#upload-panel" aria-expanded="false">
+                            <i class="ti ti-upload me-1"></i>Upload Dokumentasi
+                        </button>
+                    @endif
+                </div>
+
+                {{-- Panel Upload --}}
+                @if ($data->status == 'COMPLETED')
+                    <div class="collapse" id="upload-panel">
+                        <div class="card-body px-4 pt-0 pb-4 border-top border-dashed">
+
+                            @if ($errors->any())
+                                <div class="alert alert-danger alert-dismissible d-flex align-items-center gap-2 mt-3 mb-3"
+                                    role="alert">
+                                    <i class="ti ti-alert-circle fs-xl flex-shrink-0"></i>
+                                    <div class="flex-grow-1">
+                                        <strong>Gagal upload:</strong> {{ $errors->first() }}
+                                    </div>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            @endif
+
+                            <form action="{{ route('staff.data-agenda.upload', $data->id) }}" method="POST"
+                                enctype="multipart/form-data" id="upload-form" class="mt-3">
+                                @csrf
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold fs-sm">
+                                            <i class="ti ti-photo me-1 text-primary"></i>Foto Dokumentasi
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <div id="drop-zone"
+                                            class="border border-dashed rounded-3 p-4 text-center position-relative"
+                                            style="cursor: pointer; min-height: 180px; display: flex; align-items: center; justify-content: center; flex-direction: column;"
+                                            onclick="document.getElementById('file-input').click()">
+                                            <input type="file" id="file-input" name="file" accept="image/*"
+                                                class="d-none" onchange="handleFileSelect(this)">
+                                            <div id="drop-placeholder">
+                                                <i class="ti ti-cloud-upload fs-2xl text-muted mb-2 d-block"></i>
+                                                <p class="fw-medium text-muted mb-1 fs-sm">Klik atau seret foto ke sini</p>
+                                                <p class="text-muted fs-xs mb-0">JPG, PNG, WEBP &bull; Maks. 5MB</p>
+                                            </div>
+                                            <div id="drop-preview" class="d-none">
+                                                <img id="img-preview" src="" alt="preview"
+                                                    class="rounded-2 mb-2"
+                                                    style="max-height: 140px; max-width: 100%; object-fit: contain;">
+                                                <p id="file-name" class="fs-xs text-muted mb-0"></p>
+                                                <button type="button"
+                                                    class="btn btn-sm btn-danger-subtle text-danger mt-2"
+                                                    onclick="clearFile(event)">
+                                                    <i class="ti ti-trash me-1"></i>Ganti Foto
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 d-flex flex-column">
+                                        <label class="form-label fw-semibold fs-sm">
+                                            <i class="ti ti-message me-1 text-primary"></i>Caption
+                                            <span class="text-muted fw-normal">(Opsional)</span>
+                                        </label>
+                                        <textarea class="form-control flex-grow-1" name="caption" rows="4"
+                                            placeholder="Tulis keterangan singkat tentang foto ini..." style="resize: none;">{{ old('caption') }}</textarea>
+                                        <div class="d-flex justify-content-end gap-2 mt-3">
+                                            <button type="button" class="btn btn-light btn-sm"
+                                                onclick="clearFile(null, true); document.querySelector('textarea[name=caption]').value = ''">
+                                                <i class="ti ti-x me-1"></i>Reset
+                                            </button>
+                                            <button type="submit" class="btn btn-primary btn-sm" id="submit-btn"
+                                                disabled>
+                                                <i class="ti ti-send-2 me-1"></i>Kirim Dokumentasi
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                @endif
+
+                <div class="card-body px-4 pt-3">
+                    @forelse ($data->documentations->sortByDesc('uploaded_at') as $dt)
+                        <div class="d-flex gap-3 py-3 {{ !$loop->last ? 'border-bottom border-dashed' : '' }}">
+
+                            @php
+                                $initials = collect(explode(' ', $dt->uploader->name ?? 'U'))
+                                    ->take(2)
+                                    ->map(fn($w) => strtoupper($w[0]))
+                                    ->join('');
+                                $colors = [
+                                    'bg-primary-subtle text-primary',
+                                    'bg-success-subtle text-success',
+                                    'bg-warning-subtle text-warning',
+                                    'bg-info-subtle text-info',
+                                    'bg-danger-subtle text-danger',
+                                ];
+                                $colorClass = $colors[$loop->index % count($colors)];
+                            @endphp
+                            <div class="flex-shrink-0">
+                                <div
+                                    class="avatar-md rounded-circle {{ $colorClass }} d-flex align-items-center justify-content-center fw-bold fs-sm">
+                                    {{ $initials }}
+                                </div>
                             </div>
-                            <div class="flex-grow-1">
 
-                                {{-- Status Badge --}}
-                                <div class="mb-2">
-                                    @if ($data->status == 'COMPLETED')
-                                        <span class="badge bg-success-subtle text-success fs-xs px-2 py-1">
-                                            <i class="ti ti-circle-check me-1"></i>Selesai
-                                        </span>
-                                    @elseif ($data->status == 'APPROVED')
-                                        <span class="badge bg-primary-subtle text-primary fs-xs px-2 py-1">
-                                            <i class="ti ti-circle-check me-1"></i>Disetujui
-                                        </span>
-                                    @elseif ($data->status == 'PENDING')
-                                        <span class="badge bg-warning-subtle text-warning fs-xs px-2 py-1">
-                                            <i class="ti ti-clock me-1"></i>Menunggu Persetujuan
-                                        </span>
-                                    @elseif ($data->status == 'REJECTED')
-                                        <span class="badge bg-danger-subtle text-danger fs-xs px-2 py-1">
-                                            <i class="ti ti-x me-1"></i>Ditolak
-                                        </span>
-                                    @else
-                                        <span class="badge bg-secondary-subtle text-secondary fs-xs px-2 py-1">
-                                            {{ $data->status ?? 'Draft' }}
-                                        </span>
-                                    @endif
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-1">
+                                    <div>
+                                        <span class="fw-semibold text-body fs-sm">{{ $dt->uploader->name ?? '-' }}</span>
+                                        @if (isset($dt->uploader) && $dt->uploader->id == Auth::id())
+                                            <span class="badge bg-secondary-subtle text-secondary ms-1 fs-xxs">Anda</span>
+                                        @endif
+                                        <span class="text-muted fs-xs ms-1">menambahkan dokumentasi</span>
+                                    </div>
+                                    <span class="text-muted fs-xs text-nowrap">
+                                        {{ \Carbon\Carbon::parse($dt->uploaded_at)->locale('id')->diffForHumans() }}
+                                    </span>
                                 </div>
 
-                                {{-- Title --}}
-                                <h3 class="mb-1 fw-semibold">{{ $data->title ?? '-' }}</h3>
+                                @if ($dt->caption)
+                                    <div
+                                        class="py-2 px-3 bg-light bg-opacity-50 rounded-2 mb-2 fs-sm fst-italic text-muted border-start border-3 border-primary">
+                                        "{{ $dt->caption }}"
+                                    </div>
+                                @endif
 
-                                {{-- Date & Time --}}
-                                <div class="d-flex flex-wrap gap-3 mt-2">
-                                    <span class="text-muted fs-xs d-flex align-items-center gap-1">
-                                        <i class="ti ti-calendar fs-sm text-primary"></i>
-                                        {{ \Carbon\Carbon::parse($data->date)->locale('id')->isoFormat('dddd, D MMMM Y') }}
-                                    </span>
-                                    <span class="text-muted fs-xs d-flex align-items-center gap-1">
-                                        <i class="ti ti-clock fs-sm text-primary"></i>
-                                        {{ $data->start_time . ' WIB' }} &ndash; {{ $data->end_time . ' WIB' }}
-                                    </span>
-                                    @if ($data->place)
-                                        <span class="text-muted fs-xs d-flex align-items-center gap-1">
-                                            <i class="ti ti-map-pin fs-sm text-danger"></i>
-                                            {{ $data->place }}
-                                        </span>
-                                    @endif
+                                <div class="d-flex align-items-center gap-2 mt-2">
+                                    <a href="{{ asset('storage/' . $dt->filepath) }}" target="_blank" class="d-block">
+                                        <img src="{{ asset('storage/' . $dt->filepath) }}" alt="preview"
+                                            class="rounded-2 border" style="width: 64px; height: 64px; object-fit: cover;"
+                                            onerror="this.style.display='none'">
+                                    </a>
+                                    <a href="{{ asset('storage/' . $dt->filepath) }}" class="btn btn-sm btn-light border"
+                                        target="_blank">
+                                        <i class="ti ti-external-link me-1"></i>Lihat Gambar
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        {{-- ---- END CARD HEADER ---- --}}
 
-                        <div class="card-body px-4 pt-3">
+                    @empty
+                        <div class="text-center py-5">
+                            <div
+                                class="avatar-xl bg-light bg-opacity-75 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
+                                <i class="ti ti-photo-off fs-2xl text-muted"></i>
+                            </div>
+                            <h5 class="text-muted fw-medium">Belum Ada Dokumentasi</h5>
+                            <p class="text-muted fs-sm mb-0">Dokumentasi akan muncul setelah agenda selesai dan diupload.
+                            </p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
 
-                            {{-- ---- META INFO GRID ---- --}}
-                            <div class="row g-3 mb-4 p-3 bg-light bg-opacity-50 rounded-2">
-                                <div class="col-6 col-md-3">
-                                    <p class="text-muted fs-xs text-uppercase mb-1 fw-semibold">Dibuat Pada</p>
-                                    <p class="fw-medium mb-0 fs-sm">
-                                        {{ $data->created_at ? \Carbon\Carbon::parse($data->created_at)->locale('id')->isoFormat('D MMM Y') : '-' }}
+        </div>
+        {{-- end col-xl-8 --}}
+
+        {{-- ===================== KOLOM KANAN (SIDEBAR) ===================== --}}
+        <div class="col-xl-4">
+
+            {{-- ---- INFO AGENDA ---- --}}
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fs-sm fw-semibold text-muted text-uppercase mb-3">Info Agenda</h5>
+                    <div class="d-flex flex-column gap-3">
+
+                        <div class="d-flex align-items-start gap-2">
+                            <div class="flex-shrink-0 mt-1"><i class="ti ti-user fs-sm text-muted"></i></div>
+                            <div>
+                                <p class="text-muted fs-xs mb-0">Dibuat Oleh</p>
+                                <p class="fw-medium mb-0 fs-sm">{{ $data->creator->name ?? '-' }}
+
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start gap-2">
+                            <div class="flex-shrink-0 mt-1"><i class="ti ti-calendar-plus fs-sm text-muted"></i></div>
+                            <div>
+                                <p class="text-muted fs-xs mb-0">Dibuat Pada</p>
+                                <p class="fw-medium mb-0 fs-sm">
+                                    {{ $data->created_at ? \Carbon\Carbon::parse($data->created_at)->locale('id')->isoFormat('D MMMM Y, HH:mm') : '-' }}
+                                    WIB
+                                </p>
+                            </div>
+                        </div>
+
+                        @if ($data->approver)
+                            <div class="d-flex align-items-start gap-2">
+                                <div class="flex-shrink-0 mt-1">
+                                    @if ($data->status == 'REJECTED')
+                                        <i class="ti ti-user-x fs-sm text-danger"></i>
+                                    @else
+                                        <i class="ti ti-user-check fs-sm text-success"></i>
+                                    @endif
+                                </div>
+                                <div>
+                                    <p class="text-muted fs-xs mb-0">
+                                        {{ $data->status == 'REJECTED' ? 'Ditolak Oleh' : 'Disetujui Oleh' }}
                                     </p>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <p class="text-muted fs-xs text-uppercase mb-1 fw-semibold">Lokasi</p>
-                                    <p class="fw-medium mb-0 fs-sm text-danger">{{ $data->place ?? '-' }}</p>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <p class="text-muted fs-xs text-uppercase mb-1 fw-semibold">Dibuat Oleh</p>
-                                    <p class="fw-medium mb-0 fs-sm">{{ $data->creator->name ?? '-' }}</p>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <p class="text-muted fs-xs text-uppercase mb-1 fw-semibold">Disetujui Oleh</p>
                                     <p class="fw-medium mb-0 fs-sm">{{ $data->approver->name ?? '-' }}</p>
                                 </div>
                             </div>
+                        @endif
 
-                            {{-- ---- DESCRIPTION ---- --}}
-                            <div class="mb-4">
-                                <h5 class="fs-base mb-2 fw-semibold">
-                                    <i class="ti ti-align-left me-1 text-muted"></i>Deskripsi Agenda
-                                </h5>
-                                <p class="text-muted mb-0" style="line-height: 1.7;">
-                                    {{ $data->description ?? 'Tidak ada deskripsi.' }}</p>
+                        @if ($data->place)
+                            <div class="d-flex align-items-start gap-2">
+                                <div class="flex-shrink-0 mt-1"><i class="ti ti-map-pin fs-sm text-muted"></i></div>
+                                <div>
+                                    <p class="text-muted fs-xs mb-0">Lokasi</p>
+                                    <p class="fw-medium mb-0 fs-sm">{{ $data->place }}</p>
+                                </div>
                             </div>
+                        @endif
 
-                            {{-- ---- TOMBOL AKSI (hanya saat PENDING) ---- --}}
-                            @if ($data->status == 'PENDING')
-                                <div
-                                    class="d-flex align-items-center justify-content-between p-3 bg-warning-subtle rounded-2 border border-warning-subtle mb-4">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <i class="ti ti-info-circle text-warning fs-lg"></i>
-                                        <p class="mb-0 fs-sm text-warning fw-medium">
-                                            Agenda ini menunggu tindakan persetujuan Anda.
-                                        </p>
-                                    </div>
-                                    <div class="d-flex gap-2 ms-3 flex-shrink-0">
-                                        {{-- Tombol Tolak --}}
-                                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#modal-tolak">
-                                            <i class="ti ti-x me-1"></i>Tolak
-                                        </button>
-                                        {{-- Tombol Setujui --}}
-                                        <form action="{{ route('kabid.approval.approve', $data->id) }}" method="POST"
-                                            id="form-approve">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="button" class="btn btn-sm btn-success"
-                                                onclick="confirmApprove()">
-                                                <i class="ti ti-check me-1"></i>Setujui
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            @endif
-                            {{-- ---- END TOMBOL AKSI ---- --}}
-
-                            <hr class="border-dashed my-4">
-
-                            {{-- ---- TABS ---- --}}
-                            <ul class="nav nav-tabs nav-bordered mb-3" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-bs-toggle="tab" href="#tab-dokumentasi" role="tab">
-                                        <i class="ti ti-photo fs-lg me-md-1 align-middle"></i>
-                                        <span class="d-none d-md-inline-block align-middle">
-                                            Dokumentasi
-                                            @if ($data->documentations->count() > 0)
-                                                <span
-                                                    class="badge bg-primary-subtle text-primary ms-1">{{ $data->documentations->count() }}</span>
-                                            @endif
-                                        </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-bs-toggle="tab" href="#tab-upload" role="tab">
-                                        <i class="ti ti-upload fs-lg me-md-1 align-middle"></i>
-                                        <span class="d-none d-md-inline-block align-middle">Upload Dokumentasi</span>
-                                    </a>
-                                </li>
-                            </ul>
-
-                            <div class="tab-content">
-
-                                {{-- ========== TAB: DOKUMENTASI TERUPLOAD ========== --}}
-                                <div class="tab-pane fade active show" id="tab-dokumentasi" role="tabpanel">
-
-                                    @forelse ($data->documentations->sortByDesc('uploaded_at') as $dt)
-                                        <div class="d-flex gap-3 border-bottom border-dashed py-3">
-
-                                            {{-- Avatar Inisial --}}
-                                            <div class="flex-shrink-0">
-                                                @php
-                                                    $initials = collect(explode(' ', $dt->uploader->name ?? 'U'))
-                                                        ->take(2)
-                                                        ->map(fn($w) => strtoupper($w[0]))
-                                                        ->join('');
-                                                    $colors = [
-                                                        'bg-primary-subtle text-primary',
-                                                        'bg-success-subtle text-success',
-                                                        'bg-warning-subtle text-warning',
-                                                        'bg-info-subtle text-info',
-                                                        'bg-danger-subtle text-danger',
-                                                    ];
-                                                    $colorClass = $colors[$loop->index % count($colors)];
-                                                @endphp
-                                                <div
-                                                    class="avatar-md rounded-circle {{ $colorClass }} d-flex align-items-center justify-content-center fw-bold fs-sm">
-                                                    {{ $initials }}
-                                                </div>
-                                            </div>
-
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex justify-content-between align-items-start mb-1">
-                                                    <div>
-                                                        <span
-                                                            class="fw-semibold text-body fs-sm">{{ $dt->uploader->name ?? '-' }}</span>
-                                                        @if (isset($dt->uploader) && $dt->uploader->id == Auth::id())
-                                                            <span
-                                                                class="badge bg-secondary-subtle text-secondary ms-1 fs-xxs">Anda</span>
-                                                        @endif
-                                                        <span class="text-muted fs-xs ms-1">menambahkan dokumentasi</span>
-                                                    </div>
-                                                    <span class="text-muted fs-xs text-nowrap">
-                                                        {{ \Carbon\Carbon::parse($dt->uploaded_at)->locale('id')->diffForHumans() }}
-                                                    </span>
-                                                </div>
-
-                                                @if ($dt->caption)
-                                                    <div
-                                                        class="py-2 px-3 bg-light bg-opacity-50 rounded-2 mb-2 fs-sm fst-italic text-muted border-start border-3 border-primary">
-                                                        "{{ $dt->caption }}"
-                                                    </div>
-                                                @endif
-
-                                                <div class="d-flex align-items-center gap-2 mt-2">
-                                                    <a href="{{ asset('storage/' . $dt->filepath) }}" target="_blank"
-                                                        class="d-block">
-                                                        <img src="{{ asset('storage/' . $dt->filepath) }}" alt="preview"
-                                                            class="rounded-2 border"
-                                                            style="width: 64px; height: 64px; object-fit: cover;"
-                                                            onerror="this.style.display='none'">
-                                                    </a>
-                                                    <a href="{{ asset('storage/' . $dt->filepath) }}"
-                                                        class="btn btn-sm btn-light border" target="_blank">
-                                                        <i class="ti ti-external-link me-1"></i>Lihat Gambar
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    @empty
-                                        <div class="text-center py-5">
-                                            <div
-                                                class="avatar-xl bg-light bg-opacity-75 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
-                                                <i class="ti ti-photo-off fs-2xl text-muted"></i>
-                                            </div>
-                                            <h5 class="text-muted fw-medium">Belum Ada Dokumentasi</h5>
-                                            <p class="text-muted fs-sm mb-0">Dokumentasi akan muncul di sini setelah
-                                                diupload.</p>
-                                        </div>
-                                    @endforelse
-                                </div>
-
-                                {{-- ========== TAB: UPLOAD ========== --}}
-                                <div class="tab-pane fade" id="tab-upload" role="tabpanel">
-
-                                    @if ($data->status == 'COMPLETED')
-
-                                        @if ($errors->any())
-                                            <div class="alert alert-danger alert-dismissible d-flex align-items-center gap-2 mb-3"
-                                                role="alert">
-                                                <i class="ti ti-alert-circle fs-xl flex-shrink-0"></i>
-                                                <div class="flex-grow-1">
-                                                    <strong>Gagal upload:</strong> {{ $errors->first() }}
-                                                </div>
-                                                <button type="button" class="btn-close"
-                                                    data-bs-dismiss="alert"></button>
-                                            </div>
-                                        @endif
-
-                                        <form action="{{ route('staff.data-agenda.upload', $data->id) }}" method="POST"
-                                            enctype="multipart/form-data" id="upload-form">
-                                            @csrf
-
-                                            <div class="mb-3">
-                                                <label class="form-label fw-semibold fs-sm">
-                                                    <i class="ti ti-photo me-1 text-primary"></i>Pilih Foto Dokumentasi
-                                                    <span class="text-danger">*</span>
-                                                </label>
-
-                                                <div id="drop-zone"
-                                                    class="border border-dashed rounded-3 p-4 text-center position-relative"
-                                                    style="cursor: pointer; transition: all 0.2s ease; border-color: var(--bs-border-color) !important;"
-                                                    onclick="document.getElementById('file-input').click()">
-                                                    <input type="file" id="file-input" name="file"
-                                                        accept="image/*" class="d-none"
-                                                        onchange="handleFileSelect(this)">
-
-                                                    <div id="drop-placeholder">
-                                                        <i class="ti ti-cloud-upload fs-2xl text-muted mb-2 d-block"></i>
-                                                        <p class="fw-medium text-muted mb-1 fs-sm">Klik untuk pilih foto
-                                                        </p>
-                                                        <p class="text-muted fs-xs mb-0">JPG, PNG, WEBP &bull; Maks. 5MB
-                                                        </p>
-                                                    </div>
-
-                                                    <div id="drop-preview" class="d-none">
-                                                        <img id="img-preview" src="" alt="preview"
-                                                            class="rounded-2 mb-2"
-                                                            style="max-height: 200px; max-width: 100%; object-fit: contain;">
-                                                        <p id="file-name" class="fs-xs text-muted mb-0"></p>
-                                                        <button type="button"
-                                                            class="btn btn-sm btn-danger-subtle text-danger mt-2"
-                                                            onclick="clearFile(event)">
-                                                            <i class="ti ti-trash me-1"></i>Ganti Foto
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label fw-semibold fs-sm">
-                                                    <i class="ti ti-message me-1 text-primary"></i>Caption
-                                                    <span class="text-muted fw-normal">(Opsional)</span>
-                                                </label>
-                                                <textarea class="form-control" name="caption" rows="3"
-                                                    placeholder="Tulis keterangan singkat tentang foto ini..." style="resize: none;">{{ old('caption') }}</textarea>
-                                            </div>
-
-                                            <div class="d-flex justify-content-end gap-2">
-                                                <button type="button" class="btn btn-light btn-sm"
-                                                    onclick="clearFile(event); document.querySelector('textarea[name=caption]').value = ''">
-                                                    <i class="ti ti-x me-1"></i>Reset
-                                                </button>
-                                                <button type="submit" class="btn btn-primary btn-sm" id="submit-btn"
-                                                    disabled>
-                                                    <i class="ti ti-send-2 me-1"></i>Kirim Dokumentasi
-                                                </button>
-                                            </div>
-                                        </form>
-                                    @else
-                                        <div class="text-center py-5">
-                                            <div
-                                                class="avatar-xl bg-warning-subtle rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3">
-                                                <i class="ti ti-lock fs-2xl text-warning"></i>
-                                            </div>
-                                            <h5 class="fw-medium text-muted">Upload Belum Tersedia</h5>
-                                            <p class="text-muted fs-sm mb-0">
-                                                Dokumentasi hanya dapat diupload setelah agenda berstatus
-                                                <strong>Selesai</strong>.
-                                            </p>
-                                        </div>
-                                    @endif
-
-                                </div>
-
-                            </div>
-                        </div>
                     </div>
                 </div>
-
-                {{-- ===================== SIDEBAR ===================== --}}
-                <div class="col-xl-3">
-                    <div class="card card-h-100 rounded-0 rounded-end border-start border-dashed shadow-none">
-                        <div class="card-body p-0">
-
-                            <div class="px-3 pt-3 pb-3 border-bottom border-dashed">
-                                <h5 class="mb-3 fs-sm fw-semibold text-muted text-uppercase">Ringkasan</h5>
-                                <div class="row g-2">
-                                    <div class="col-6">
-                                        <div class="p-2 bg-primary-subtle rounded-2 text-center">
-                                            <h4 class="mb-0 text-primary fw-bold">{{ $data->documentations->count() }}
-                                            </h4>
-                                            <p class="mb-0 fs-xs text-muted">Dokumentasi</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="p-2 bg-success-subtle rounded-2 text-center">
-                                            <h4 class="mb-0 text-success fw-bold">{{ $data->attachments->count() }}</h4>
-                                            <p class="mb-0 fs-xs text-muted">Lampiran</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="px-3 pt-3">
-                                <h5 class="mb-3 fs-sm fw-semibold text-muted text-uppercase">
-                                    <i class="ti ti-paperclip me-1"></i>Lampiran
-                                </h5>
-
-                                @forelse ($data->attachments as $dt)
-                                    <div
-                                        class="d-flex justify-content-between align-items-center py-2 border-bottom border-dashed">
-                                        <div class="d-flex align-items-center gap-2 overflow-hidden">
-                                            @php
-                                                $ext = strtolower(pathinfo($dt->filename ?? '', PATHINFO_EXTENSION));
-                                                $iconClass = match ($ext) {
-                                                    'pdf' => 'ti-file-type-pdf text-danger',
-                                                    'doc', 'docx' => 'ti-file-type-doc text-primary',
-                                                    'xls', 'xlsx' => 'ti-file-type-xls text-success',
-                                                    'jpg', 'jpeg', 'png', 'webp' => 'ti-photo text-info',
-                                                    default => 'ti-file text-secondary',
-                                                };
-                                            @endphp
-                                            <div
-                                                class="flex-shrink-0 avatar-sm bg-light rounded-2 d-flex align-items-center justify-content-center">
-                                                <i class="ti {{ $iconClass }} fs-lg"></i>
-                                            </div>
-                                            <div class="overflow-hidden">
-                                                <h6 class="mb-0 fs-xs fw-medium text-truncate" style="max-width: 120px;"
-                                                    title="{{ $dt->filename ?? '-' }}">
-                                                    <a href="{{ asset('storage/' . $dt->filepath) }}" class="link-reset"
-                                                        target="_blank">{{ $dt->filename ?? '-' }}</a>
-                                                </h6>
-                                                <p class="text-muted mb-0 fs-xxs">{{ $dt->file_size ?? '-' }} MB</p>
-                                            </div>
-                                        </div>
-                                        <a href="{{ asset('storage/' . $dt->filepath) }}"
-                                            class="btn btn-sm btn-icon btn-light flex-shrink-0" title="Download" download>
-                                            <i class="ti ti-download"></i>
-                                        </a>
-                                    </div>
-                                @empty
-                                    <div class="text-center py-4">
-                                        <i class="ti ti-paperclip-off fs-2xl text-muted d-block mb-2"></i>
-                                        <p class="text-muted fs-xs mb-0">Tidak ada lampiran</p>
-                                    </div>
-                                @endforelse
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
             </div>
+
+            {{-- ---- STATISTIK ---- --}}
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-body p-3 text-center">
+                            <h3 class="mb-0 fw-bold text-primary">{{ $data->documentations->count() }}</h3>
+                            <p class="mb-0 fs-xs text-muted mt-1">Dokumentasi</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-body p-3 text-center">
+                            <h3 class="mb-0 fw-bold text-success">{{ $data->attachments->count() }}</h3>
+                            <p class="mb-0 fs-xs text-muted mt-1">Lampiran</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ---- LAMPIRAN ---- --}}
+            <div class="card">
+                <div class="card-body p-4">
+                    <h5 class="fs-sm fw-semibold text-muted text-uppercase mb-3">
+                        <i class="ti ti-paperclip me-1"></i>Lampiran
+                    </h5>
+
+                    @forelse ($data->attachments as $dt)
+                        <div
+                            class="d-flex justify-content-between align-items-center py-2 {{ !$loop->last ? 'border-bottom border-dashed' : '' }}">
+                            <div class="d-flex align-items-center gap-2 overflow-hidden">
+                                @php
+                                    $ext = strtolower(pathinfo($dt->filename ?? '', PATHINFO_EXTENSION));
+                                    $iconClass = match ($ext) {
+                                        'pdf' => 'ti-file-type-pdf text-danger',
+                                        'doc', 'docx' => 'ti-file-type-doc text-primary',
+                                        'xls', 'xlsx' => 'ti-file-type-xls text-success',
+                                        'jpg', 'jpeg', 'png', 'webp' => 'ti-photo text-info',
+                                        default => 'ti-file text-secondary',
+                                    };
+                                @endphp
+                                <div
+                                    class="flex-shrink-0 avatar-sm bg-light rounded-2 d-flex align-items-center justify-content-center">
+                                    <i class="ti {{ $iconClass }} fs-lg"></i>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <h6 class="mb-0 fs-xs fw-medium text-truncate" style="max-width: 140px;"
+                                        title="{{ $dt->filename ?? '-' }}">
+                                        <a href="{{ asset('storage/' . $dt->filepath) }}" class="link-reset"
+                                            target="_blank">
+                                            {{ $dt->filename ?? '-' }}
+                                        </a>
+                                    </h6>
+                                    <p class="text-muted mb-0 fs-xxs">
+                                        {{ number_format($dt->file_size / 1048576, 1) }} MB
+                                    </p>
+                                </div>
+                            </div>
+                            <a href="{{ asset('storage/' . $dt->filepath) }}"
+                                class="btn btn-sm btn-icon btn-light flex-shrink-0" title="Download" download>
+                                <i class="ti ti-download"></i>
+                            </a>
+                        </div>
+                    @empty
+                        <div class="text-center py-4">
+                            <i class="ti ti-paperclip-off fs-2xl text-muted d-block mb-2"></i>
+                            <p class="text-muted fs-xs mb-0">Tidak ada lampiran</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
         </div>
+        {{-- end col-xl-4 --}}
+
     </div>
+    {{-- end row --}}
+
 
     {{-- ===================== MODAL TOLAK AGENDA ===================== --}}
     @if ($data->status == 'PENDING')
@@ -455,7 +455,7 @@
 
                         <div class="modal-body py-4">
 
-                            {{-- Info agenda yang ditolak --}}
+                            {{-- Info agenda --}}
                             <div class="d-flex align-items-center gap-2 p-3 bg-light bg-opacity-75 rounded-2 mb-4">
                                 <i class="ti ti-calendar-event text-muted fs-lg flex-shrink-0"></i>
                                 <div class="overflow-hidden">
@@ -466,7 +466,6 @@
                                 </div>
                             </div>
 
-                            {{-- Textarea alasan --}}
                             <div class="mb-1">
                                 <label class="form-label fw-semibold fs-sm" for="rejection-reason">
                                     Alasan Penolakan <span class="text-danger">*</span>
@@ -486,7 +485,7 @@
                             <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
                                 <i class="ti ti-arrow-left me-1"></i>Batal
                             </button>
-                            <button type="submit" class="btn btn-danger btn-sm" id="btn-reject-submit">
+                            <button type="submit" class="btn btn-danger btn-sm" id="btn-reject-submit" disabled>
                                 <i class="ti ti-x me-1"></i>Konfirmasi Penolakan
                             </button>
                         </div>
@@ -502,6 +501,10 @@
 
 @push('styles')
     <style>
+        .agenda-hero {
+            padding: 0.5rem 0 1rem;
+        }
+
         #drop-zone:hover {
             border-color: var(--bs-primary) !important;
             background-color: rgba(var(--bs-primary-rgb), 0.03);
@@ -522,12 +525,14 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // ── Auto-switch ke tab upload jika ada error validasi ──
+            // ── Auto-buka panel upload jika ada error validasi ──
             @if ($errors->any())
-                var triggerEl = document.querySelector('a[href="#tab-upload"]');
-                if (triggerEl) {
-                    new bootstrap.Tab(triggerEl).show();
-                    triggerEl.scrollIntoView({
+                var uploadPanel = document.getElementById('upload-panel');
+                if (uploadPanel) {
+                    new bootstrap.Collapse(uploadPanel, {
+                        show: true
+                    });
+                    uploadPanel.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
                     });
@@ -556,7 +561,7 @@
                 });
             }
 
-            // ── Reset textarea & counter saat modal ditutup ──
+            // ── Reset modal saat ditutup ──
             var modalTolak = document.getElementById('modal-tolak');
             if (modalTolak) {
                 modalTolak.addEventListener('hidden.bs.modal', function() {
@@ -576,23 +581,15 @@
             }
         }
 
-        // ── Counter karakter textarea alasan ──
+        // ── Counter karakter alasan penolakan ──
         function updateCharCount(el) {
             var count = el.value.length;
             document.getElementById('char-count').textContent = count;
-
-            // Validasi minimal 10 karakter untuk enable tombol submit
             var submitBtn = document.getElementById('btn-reject-submit');
             if (submitBtn) submitBtn.disabled = count < 10;
         }
 
-        // Disable tombol submit saat pertama modal dibuka
-        document.addEventListener('DOMContentLoaded', function() {
-            var submitBtn = document.getElementById('btn-reject-submit');
-            if (submitBtn) submitBtn.disabled = true;
-        });
-
-        // ── Preview gambar ──
+        // ── Preview gambar upload ──
         function handleFileSelect(input) {
             var file = input.files[0];
             if (!file) return;
@@ -609,8 +606,8 @@
             var reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('img-preview').src = e.target.result;
-                document.getElementById('file-name').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) +
-                    ' KB)';
+                document.getElementById('file-name').textContent =
+                    file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
                 document.getElementById('drop-placeholder').classList.add('d-none');
                 document.getElementById('drop-preview').classList.remove('d-none');
                 document.getElementById('submit-btn').disabled = false;

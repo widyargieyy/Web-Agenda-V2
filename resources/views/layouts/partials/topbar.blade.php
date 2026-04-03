@@ -1,11 +1,22 @@
 <header class="app-topbar">
     <div class="container-fluid topbar-menu">
         <div class="d-flex align-items-center gap-2">
-
+            @php
+                $dashboardRoute = '#'; // fallback jika tidak cocok
+                if (auth()->user()->role_id == 1) {
+                    $dashboardRoute = route('admin.dashboard');
+                } elseif (auth()->user()->role_id == 2) {
+                    $dashboardRoute = route('operator.dashboard');
+                } elseif (auth()->user()->role_id == 4) {
+                    $dashboardRoute = route('staff.dashboard');
+                } elseif (auth()->user()->role_id == 3) {
+                    $dashboardRoute = route('kabid.dashboard');
+                }
+            @endphp
             <!-- Topbar Brand Logo -->
             <div class="logo-topbar">
                 <!-- Logo light -->
-                <a href="index.html" class="logo-light">
+                <a href="{{ $dashboardRoute }}" class="logo-light">
                     <span class="logo-lg">
                         <img src="{{ asset('assets') }}/images/logo.png" alt="logo" />
                     </span>
@@ -15,9 +26,9 @@
                 </a>
 
                 <!-- Logo Dark -->
-                <a href="index.html" class="logo-dark">
+                <a href="{{ $dashboardRoute }}" class="logo-dark">
                     <span class="logo-lg">
-                        <img src="{{ asset('assets') }}/images/logo-black.png" alt="dark logo" />
+                        <img src="{{ asset('assets') }}/images/logo.png" alt="dark logo" />
                     </span>
                     <span class="logo-sm">
                         <img src="{{ asset('assets') }}/images/logo-sm.png" alt="small logo" />
@@ -54,137 +65,184 @@
                         <div class="h-100" style="max-height: 380px" data-simplebar="">
                             <div class="row g-0">
                                 <div class="col-sm-8">
-                                    <div class="row g-0">
-                                        <div class="col-sm-6">
-                                            <div class="p-2">
-                                                <a href="#!" class="dropdown-item">
-                                                    <span class="d-flex align-items-center">
-                                                        <span class="avatar-md me-2">
-                                                            <span
-                                                                class="avatar-title text-primary border border-light bg-light bg-opacity-50 rounded">
-                                                                <i class="ti ti-basket fs-22"></i>
-                                                            </span>
-                                                        </span>
-                                                        <span>
-                                                            <h5 class="fs-base mb-0 lh-base">eCommerce</h5>
-                                                            <span class="text-muted fs-12">Products, orders &amp;
-                                                                etc.</span>
-                                                        </span>
-                                                    </span>
-                                                </a>
+                                    {{-- admin --}}
+                                    @if (Auth::user()->role_id == 1)
+                                        <div class="row g-0">
+                                            <div class="col-sm-6">
+                                                <div class="p-2">
 
-                                                <a href="#!" class="dropdown-item my-2">
-                                                    <span class="d-flex align-items-center">
-                                                        <span class="avatar-md me-2">
-                                                            <span
-                                                                class="avatar-title text-success border border-light bg-light bg-opacity-50 rounded">
-                                                                <i class="ti ti-message fs-22"></i>
+                                                    <a href="{{ route('admin.dashboard') }}" class="dropdown-item">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="avatar-md me-2">
+                                                                <span
+                                                                    class="avatar-title text-primary border border-light bg-light bg-opacity-50 rounded">
+                                                                    <i class="ti ti-layout-dashboard fs-22"></i>
+                                                                </span>
+                                                            </span>
+                                                            <span>
+                                                                <h5 class="fs-base mb-0 lh-base">Dashboard</h5>
+                                                                <span class="text-muted fs-12">Ringkasan & statistik
+                                                                    agenda</span>
                                                             </span>
                                                         </span>
-                                                        <span>
-                                                            <h5 class="fs-base mb-0 lh-base">Chat</h5>
-                                                            <span class="text-muted fs-12">Team conversations</span>
-                                                        </span>
-                                                    </span>
-                                                </a>
+                                                    </a>
 
-                                                <a href="#!" class="dropdown-item my-2">
-                                                    <span class="d-flex align-items-center">
-                                                        <span class="avatar-md me-2">
-                                                            <span
-                                                                class="avatar-title text-danger border border-light bg-light bg-opacity-50 rounded">
-                                                                <i class="ti ti-list-check fs-22"></i>
+                                                    <a href="{{ route('admin.data-agenda.index') }}"
+                                                        class="dropdown-item my-2">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="avatar-md me-2">
+                                                                <span
+                                                                    class="avatar-title text-success border border-light bg-light bg-opacity-50 rounded">
+                                                                    <i class="ti ti-calendar fs-22"></i>
+                                                                </span>
+                                                            </span>
+                                                            <span>
+                                                                <h5 class="fs-base mb-0 lh-base">Data Agenda</h5>
+                                                                <span class="text-muted fs-12">Kelola jadwal &
+                                                                    kegiatan</span>
                                                             </span>
                                                         </span>
-                                                        <span>
-                                                            <h5 class="fs-base mb-0 lh-base">Task</h5>
-                                                            <span class="text-muted fs-12">Plan and track work</span>
-                                                        </span>
-                                                    </span>
-                                                </a>
+                                                    </a>
+                                                </div>
+                                            </div>
 
-                                                <a href="#!" class="dropdown-item mt-2">
-                                                    <span class="d-flex align-items-center">
-                                                        <span class="avatar-md me-2">
-                                                            <span
-                                                                class="avatar-title text-info border border-light bg-light bg-opacity-50 rounded">
-                                                                <i class="ti ti-mailbox fs-22"></i>
+                                            <div class="col-sm-6">
+                                                <div class="p-2">
+                                                    <a href="{{ route('admin.user-management.index') }}"
+                                                        class="dropdown-item">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="avatar-md me-2">
+                                                                <span
+                                                                    class="avatar-title text-secondary border border-light bg-light bg-opacity-50 rounded">
+                                                                    <i class="ti ti-users fs-22"></i>
+                                                                </span>
+                                                            </span>
+                                                            <span>
+                                                                <h5 class="fs-base mb-0 lh-base">Manajemen User</h5>
+                                                                <span class="text-muted fs-12">Pengaturan hak akses
+                                                                    akun</span>
                                                             </span>
                                                         </span>
-                                                        <span>
-                                                            <h5 class="fs-base mb-0 lh-base">Email</h5>
-                                                            <span class="text-muted fs-12">Messages and inbox</span>
+                                                    </a>
+
+                                                    <a href="{{ route('admin.user-management.index') }}"
+                                                        class="dropdown-item my-2">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="avatar-md me-2">
+                                                                <span
+                                                                    class="avatar-title text-warning border border-light bg-light bg-opacity-50 rounded">
+                                                                    <i class="ti ti-category fs-22"></i>
+                                                                </span>
+                                                            </span>
+                                                            <span>
+                                                                <h5 class="fs-base mb-0 lh-base">Manajemen Kategori</h5>
+                                                                <span class="text-muted fs-12">Klasifikasi jenis
+                                                                    kegiatan</span>
+                                                            </span>
                                                         </span>
-                                                    </span>
-                                                </a>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
+                                    @endif
 
-                                        <div class="col-sm-6">
-                                            <div class="p-2">
-                                                <a href="#!" class="dropdown-item">
-                                                    <span class="d-flex align-items-center">
-                                                        <span class="avatar-md me-2">
-                                                            <span
-                                                                class="avatar-title text-secondary border border-light bg-light bg-opacity-50 rounded">
-                                                                <i class="ti ti-building fs-22"></i>
+                                    @if (Auth::user()->role_id == 4)
+                                        <div class="row g-0">
+                                            <div class="col-sm-6">
+                                                <div class="p-2">
+                                                    <a href="{{ route('staff.dashboard') }}" class="dropdown-item">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="avatar-md me-2">
+                                                                <span
+                                                                    class="avatar-title text-primary border border-light bg-light bg-opacity-50 rounded">
+                                                                    <i class="ti ti-layout-dashboard fs-22"></i>
+                                                                </span>
+                                                            </span>
+                                                            <span>
+                                                                <h5 class="fs-base mb-0 lh-base">Dashboard</h5>
+                                                                <span class="text-muted fs-12">Ringkasan & statistik
+                                                                    agenda</span>
                                                             </span>
                                                         </span>
-                                                        <span>
-                                                            <h5 class="fs-base mb-0 lh-base">Companies</h5>
-                                                            <span class="text-muted fs-12">Business profiles</span>
-                                                        </span>
-                                                    </span>
-                                                </a>
+                                                    </a>
 
-                                                <a href="#!" class="dropdown-item my-2">
-                                                    <span class="d-flex align-items-center">
-                                                        <span class="avatar-md me-2">
-                                                            <span
-                                                                class="avatar-title text-dark border border-light bg-light bg-opacity-50 rounded">
-                                                                <i class="ti ti-id fs-22"></i>
+                                                    <a href="{{ route('staff.data-agenda') }}"
+                                                        class="dropdown-item my-2">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="avatar-md me-2">
+                                                                <span
+                                                                    class="avatar-title text-success border border-light bg-light bg-opacity-50 rounded">
+                                                                    <i class="ti ti-calendar fs-22"></i>
+                                                                </span>
+                                                            </span>
+                                                            <span>
+                                                                <h5 class="fs-base mb-0 lh-base">Lihat Agenda</h5>
+                                                                <span class="text-muted fs-12">Lihat jadwal Agenda &
+                                                                    kegiatan</span>
                                                             </span>
                                                         </span>
-                                                        <span>
-                                                            <h5 class="fs-base mb-0 lh-base">Contacts Diary</h5>
-                                                            <span class="text-muted fs-12">People and
-                                                                connections</span>
-                                                        </span>
-                                                    </span>
-                                                </a>
-
-                                                <a href="#!" class="dropdown-item my-2">
-                                                    <span class="d-flex align-items-center">
-                                                        <span class="avatar-md me-2">
-                                                            <span
-                                                                class="avatar-title text-warning border border-light bg-light bg-opacity-50 rounded">
-                                                                <i class="ti ti-calendar fs-22"></i>
-                                                            </span>
-                                                        </span>
-                                                        <span>
-                                                            <h5 class="fs-base mb-0 lh-base">Calendar</h5>
-                                                            <span class="text-muted fs-12">Events and reminders</span>
-                                                        </span>
-                                                    </span>
-                                                </a>
-
-                                                <a href="#!" class="dropdown-item mt-2">
-                                                    <span class="d-flex align-items-center">
-                                                        <span class="avatar-md me-2">
-                                                            <span
-                                                                class="avatar-title text-success border border-light bg-light bg-opacity-50 rounded">
-                                                                <i class="ti ti-lifebuoy fs-22"></i>
-                                                            </span>
-                                                        </span>
-                                                        <span>
-                                                            <h5 class="fs-base mb-0 lh-base">Support</h5>
-                                                            <span class="text-muted fs-12">Help and assistance</span>
-                                                        </span>
-                                                    </span>
-                                                </a>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
+                                    @if (Auth::user()->role_id == 2)
+                                        <div class="row g-0">
+                                            <div class="col-sm-6">
+                                                <div class="p-2">
+                                                    <a href="{{ route('operator.dashboard') }}"
+                                                        class="dropdown-item">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="avatar-md me-2">
+                                                                <span
+                                                                    class="avatar-title text-primary border border-light bg-light bg-opacity-50 rounded">
+                                                                    <i class="ti ti-smart-home fs-22"></i>
+                                                                </span>
+                                                            </span>
+                                                            <span>
+                                                                <h5 class="fs-base mb-0 lh-base">Dashboard</h5>
+                                                                <span class="text-muted fs-12">Ringkasan & statistik
+                                                                    agenda</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+
+                                                    <a href="{{ route('operator.agenda-saya.index') }}"
+                                                        class="dropdown-item my-2">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="avatar-md me-2">
+                                                                <span
+                                                                    class="avatar-title text-success border border-light bg-light bg-opacity-50 rounded">
+                                                                    <i class="ti ti-calendar-event fs-22"></i>
+                                                                </span>
+                                                            </span>
+                                                            <span>
+                                                                <h5 class="fs-base mb-0 lh-base">Lihat Agenda</h5>
+                                                                <span class="text-muted fs-12">Lihat jadwal Agenda &
+                                                                    kegiatan</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                    <a href="{{ route('operator.buat-agenda.create') }}"
+                                                        class="dropdown-item my-2">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="avatar-md me-2">
+                                                                <span
+                                                                    class="avatar-title text-info border border-light bg-light bg-opacity-50 rounded">
+                                                                    <i class="ti ti-calendar-plus fs-22"></i>
+                                                                </span>
+                                                            </span>
+                                                            <span>
+                                                                <h5 class="fs-base mb-0 lh-base">Buat Agenda</h5>
+                                                                <span class="text-muted fs-12">Buat jadwal Agenda &
+                                                                    kegiatan</span>
+                                                            </span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
                                     <!-- end row-->
 
                                     <div class="row g-0 border-top border-light border-dashed text-center">
@@ -192,7 +250,7 @@
                                             <div class="p-3">
                                                 <p class="fw-medium text-muted mb-2 fs-11 text-uppercase lh-1">-:
                                                     &nbsp; Support &nbsp;:-</p>
-                                                <h5 class="fs-15 mb-0">help@mydomain.com</h5>
+                                                <h5 class="fs-15 mb-0">BappedaKab.Sumenep@ac.id</h5>
                                             </div>
                                         </div>
                                         <div class="col">
@@ -245,117 +303,6 @@
                 </div>
             </div>
 
-            <!-- Apps Grid Dropdown -->
-            <div id="apps-dropdown-grid" class="topbar-item d-none d-xl-flex">
-                <div class="dropdown">
-                    <button class="topbar-link dropdown-toggle drop-arrow-none" data-bs-toggle="dropdown"
-                        type="button" data-bs-auto-close="outside" aria-haspopup="false" aria-expanded="false">
-                        <i class="ti ti-apps topbar-link-icon"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-lg p-2 dropdown-menu-end">
-                        <div class="row align-items-center g-1">
-                            <div class="col-4">
-                                <a href="javascript:void(0);"
-                                    class="dropdown-item border border-dashed rounded text-center py-2">
-                                    <span class="avatar-sm d-block mx-auto mb-1">
-                                        <span class="avatar-title text-bg-light rounded-circle">
-                                            <img src="{{ asset('assets') }}/images/logos/google.svg" alt="Google Logo"
-                                                height="18" />
-                                        </span>
-                                    </span>
-                                    <span class="align-middle fw-medium">Google</span>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="javascript:void(0);"
-                                    class="dropdown-item border border-dashed rounded text-center py-2">
-                                    <span class="avatar-sm d-block mx-auto mb-1">
-                                        <span class="avatar-title text-bg-light rounded-circle">
-                                            <img src="{{ asset('assets') }}/images/logos/figma.svg" alt="Figma Logo"
-                                                height="18" />
-                                        </span>
-                                    </span>
-                                    <span class="align-middle fw-medium">Figma</span>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="javascript:void(0);"
-                                    class="dropdown-item border border-dashed rounded text-center py-2">
-                                    <span class="avatar-sm d-block mx-auto mb-1">
-                                        <span class="avatar-title text-bg-light rounded-circle">
-                                            <img src="{{ asset('assets') }}/images/logos/slack.svg" alt="Slack Logo"
-                                                height="18" />
-                                        </span>
-                                    </span>
-                                    <span class="align-middle fw-medium">Slack</span>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="javascript:void(0);"
-                                    class="dropdown-item border border-dashed rounded text-center py-2">
-                                    <span class="avatar-sm d-block mx-auto mb-1">
-                                        <span class="avatar-title text-bg-light rounded-circle">
-                                            <img src="{{ asset('assets') }}/images/logos/dropbox.svg"
-                                                alt="Dropbox Logo" height="18" />
-                                        </span>
-                                    </span>
-                                    <span class="align-middle fw-medium">Dropbox</span>
-                                </a>
-                            </div>
-                            <div class="col-4 text-center">
-                                <a href="javascript:void(0);" class="btn btn-sm rounded-circle btn-icon btn-danger">
-                                    <i class="ti ti-circle-dashed-plus fs-18"></i>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="javascript:void(0);"
-                                    class="dropdown-item border border-dashed rounded text-center py-2">
-                                    <span class="avatar-sm d-block mx-auto mb-1">
-                                        <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                            <i class="ti ti-calendar fs-18"></i>
-                                        </span>
-                                    </span>
-                                    <span class="align-middle fw-medium">Calendar</span>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="javascript:void(0);"
-                                    class="dropdown-item border border-dashed rounded text-center py-2">
-                                    <span class="avatar-sm d-block mx-auto mb-1">
-                                        <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                            <i class="ti ti-message-circle fs-18"></i>
-                                        </span>
-                                    </span>
-                                    <span class="align-middle fw-medium">Chat</span>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="javascript:void(0);"
-                                    class="dropdown-item border border-dashed rounded text-center py-2">
-                                    <span class="avatar-sm d-block mx-auto mb-1">
-                                        <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                            <i class="ti ti-folder fs-18"></i>
-                                        </span>
-                                    </span>
-                                    <span class="align-middle fw-medium">Files</span>
-                                </a>
-                            </div>
-                            <div class="col-4">
-                                <a href="javascript:void(0);"
-                                    class="dropdown-item border border-dashed rounded text-center py-2">
-                                    <span class="avatar-sm d-block mx-auto mb-1">
-                                        <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                            <i class="ti ti-users fs-18"></i>
-                                        </span>
-                                    </span>
-                                    <span class="align-middle fw-medium">Team</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Notifications -->
             <div id="notification-dropdown-people" class="topbar-item">
                 @include('layouts.partials.topbar-notifications')
@@ -384,69 +331,25 @@
                 </button>
             </div>
 
-            <!-- Language Selector -->
-            <div id="language-selector-rounded" class="topbar-item">
-                <div class="dropdown">
-                    <button class="topbar-link fw-bold" data-bs-toggle="dropdown" type="button"
-                        aria-haspopup="false" aria-expanded="false">
-                        <img src="{{ asset('assets') }}/images/flags/us.svg" alt="user-image"
-                            class="rounded-circle me-2" height="18" id="selected-language-image" />
-                        <span id="selected-language-code">EN</span>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="en"
-                            title="English">
-                            <img src="{{ asset('assets') }}/images/flags/us.svg" alt="English"
-                                class="me-1 rounded-circle" height="18" />
-                            <span class="align-middle">English</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="de"
-                            title="German">
-                            <img src="{{ asset('assets') }}/images/flags/de.svg" alt="German"
-                                class="me-1 rounded-circle" height="18" />
-                            <span class="align-middle">Deutsch</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="it"
-                            title="Italian">
-                            <img src="{{ asset('assets') }}/images/flags/it.svg" alt="Italian"
-                                class="me-1 rounded-circle" height="18" />
-                            <span class="align-middle">Italiano</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="es"
-                            title="Spanish">
-                            <img src="{{ asset('assets') }}/images/flags/es.svg" alt="Spanish"
-                                class="me-1 rounded-circle" height="18" />
-                            <span class="align-middle">Español</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="ru"
-                            title="Russian">
-                            <img src="{{ asset('assets') }}/images/flags/ru.svg" alt="Russian"
-                                class="me-1 rounded-circle" height="18" />
-                            <span class="align-middle">Русский</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="hi"
-                            title="Hindi">
-                            <img src="{{ asset('assets') }}/images/flags/in.svg" alt="Hindi"
-                                class="me-1 rounded-circle" height="18" />
-                            <span class="align-middle">हिन्दी</span>
-                        </a>
-                        <a href="javascript:void(0);" class="dropdown-item" data-translator-lang="ar"
-                            title="Arabic">
-                            <img src="{{ asset('assets') }}/images/flags/sa.svg" alt="Arabic"
-                                class="me-1 rounded-circle" height="18" />
-                            <span class="align-middle">عربي</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
             <!-- User Dropdown -->
             <div id="user-dropdown-detailed" class="topbar-item nav-user">
                 <div class="dropdown">
                     <a class="topbar-link dropdown-toggle drop-arrow-none px-2" data-bs-toggle="dropdown"
                         href="#!" aria-haspopup="false" aria-expanded="false">
-                        <img src="{{ asset('assets') }}/images/users/user-1.jpg" width="32"
-                            class="rounded-circle me-lg-2 d-flex" alt="user-image" />
+                        <div class="rounded-circle me-lg-2 d-flex align-items-center justify-content-center bg-primary text-white fw-bold"
+                            style="width: 32px; height: 32px; font-size: 12px; flex-shrink: 0;">
+                            @php
+                                // Ambil nama dari user yang sedang login
+                                $words = explode(' ', Auth::user()->name ?? 'U');
+                                $initials = '';
+                                foreach ($words as $key => $word) {
+                                    if ($key < 2) {
+                                        $initials .= strtoupper(substr($word, 0, 1));
+                                    }
+                                }
+                                echo $initials;
+                            @endphp
+                        </div>
                         <div class="d-lg-flex align-items-center gap-1 d-none">
                             <span>
                                 <h5 class="my-0 lh-1 pro-username">{{ Auth::user()->name ?? 'belum login' }}</h5>
@@ -463,7 +366,7 @@
                             <i class="ti ti-user-circle me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Profile</span>
                         </a>
-                        <a href="javascript:void(0);" class="dropdown-item">
+                        {{-- <a href="javascript:void(0);" class="dropdown-item">
                             <i class="ti ti-bell-ringing me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Notifications</span>
                         </a>
@@ -474,12 +377,12 @@
                         <a href="javascript:void(0);" class="dropdown-item">
                             <i class="ti ti-headset me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Support Center</span>
-                        </a>
+                        </a> --}}
                         <div class="dropdown-divider"></div>
-                        <a href="auth-lock-screen.html" class="dropdown-item">
+                        {{-- <a href="auth-lock-screen.html" class="dropdown-item">
                             <i class="ti ti-lock me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Lock Screen</span>
-                        </a>
+                        </a>  --}}
                         <a href="{{ route('logout') }}" class="dropdown-item fw-semibold">
                             <i class="ti ti-logout me-1 fs-lg align-middle"></i>
                             <span class="align-middle">Log Out</span>

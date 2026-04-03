@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Manajemen User')
 
 @section('page-title')
     <div class="page-title-head d-flex align-items-center">

@@ -21,7 +21,7 @@
 <meta name="author" content="Coderthemes" />
 
 <!-- App favicon -->
-<link rel="shortcut icon" href="{{ asset('assets') }}/images/favicon.ico" />
+<link rel="shortcut icon" href="{{ asset('assets') }}/images/logo_bappeda.png" />
 
 <!-- Theme Config Js -->
 <script src="{{ asset('assets') }}/js/config.js"></script>
