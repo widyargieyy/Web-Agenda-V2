@@ -7,6 +7,7 @@ use App\Models\Agenda;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ApprovalController extends Controller
@@ -36,6 +37,8 @@ class ApprovalController extends Controller
     {
         $data->update([
             'status' => 'APPROVED',
+            'approved_by' => Auth::id(),
+            'approved_at' => now(),
         ]);
 
         Alert::success('Berhasil!', 'Agenda Telah Disetujui');

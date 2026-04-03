@@ -190,7 +190,7 @@
                 {{-- ===== ACTION BUTTONS ===== --}}
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <a href="{{ route('operator.agenda-saya.index') }}" class="btn btn-light">
-                        <i class="ti ti-arrow-left me-1"></i>Kembali
+                        <i class="ti ti-arrow-left me-1"></i>Ke Data Agenda
                     </a>
                     <div class="d-flex gap-2">
                         <button type="reset" class="btn btn-light" id="reset-btn">

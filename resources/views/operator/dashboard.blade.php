@@ -48,7 +48,8 @@
                     <p class="text-muted fs-sm mb-0">Agenda belum dikirim</p>
                 </div>
                 <div class="card-footer bg-primary-subtle border-0 py-2 px-3">
-                    <a href="" class="text-primary fs-xs fw-medium text-decoration-none">
+                    <a href="{{ route('operator.agenda-saya.index') }}"
+                        class="text-primary fs-xs fw-medium text-decoration-none">
                         Lihat semua <i class="ti ti-arrow-right ms-1"></i>
                     </a>
                 </div>
@@ -69,7 +70,8 @@
                     <p class="text-muted fs-sm mb-0">Menunggu persetujuan</p>
                 </div>
                 <div class="card-footer bg-warning-subtle border-0 py-2 px-3">
-                    <a href="" class="text-warning fs-xs fw-medium text-decoration-none">
+                    <a href="{{ route('operator.agenda-saya.index') }}"
+                        class="text-warning fs-xs fw-medium text-decoration-none">
                         Lihat semua <i class="ti ti-arrow-right ms-1"></i>
                     </a>
                 </div>
@@ -90,7 +92,8 @@
                     <p class="text-muted fs-sm mb-0">Agenda disetujui</p>
                 </div>
                 <div class="card-footer bg-success-subtle border-0 py-2 px-3">
-                    <a href="" class="text-success fs-xs fw-medium text-decoration-none">
+                    <a href="{{ route('operator.agenda-saya.index') }}"
+                        class="text-success fs-xs fw-medium text-decoration-none">
                         Lihat semua <i class="ti ti-arrow-right ms-1"></i>
                     </a>
                 </div>
@@ -111,7 +114,8 @@
                     <p class="text-muted fs-sm mb-0">Agenda ditolak</p>
                 </div>
                 <div class="card-footer bg-danger-subtle border-0 py-2 px-3">
-                    <a href="" class="text-danger fs-xs fw-medium text-decoration-none">
+                    <a href="{{ route('operator.agenda-saya.index') }}"
+                        class="text-danger fs-xs fw-medium text-decoration-none">
                         Lihat semua <i class="ti ti-arrow-right ms-1"></i>
                     </a>
                 </div>
@@ -136,7 +140,7 @@
                         </div>
                     </div>
                     @if (isset($dataAgendaDraft) && $dataAgendaDraft->count() > 0)
-                        <a href="" class="btn btn-sm btn-light">
+                        <a href="{{ route('operator.agenda-saya.index') }}" class="btn btn-sm btn-light">
                             Lihat Semua <i class="ti ti-arrow-right ms-1"></i>
                         </a>
                     @endif
@@ -202,7 +206,7 @@
                         </div>
                     </div>
                     @if (isset($dataAgendaRejected) && $dataAgendaRejected->count() > 0)
-                        <a href="" class="btn btn-sm btn-light">
+                        <a href="{{ route('operator.agenda-saya.index') }}" class="btn btn-sm btn-light">
                             Lihat Semua <i class="ti ti-arrow-right ms-1"></i>
                         </a>
                     @endif

@@ -304,9 +304,9 @@
             </div>
 
             <!-- Notifications -->
-            <div id="notification-dropdown-people" class="topbar-item">
+            {{-- <div id="notification-dropdown-people" class="topbar-item">
                 @include('layouts.partials.topbar-notifications')
-            </div>
+            </div> --}}
 
             <!-- Fullscreen -->
             <div id="fullscreen-toggler" class="topbar-item d-none d-md-flex">
